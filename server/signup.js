@@ -187,4 +187,4 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
 // signUpStudent("Arabelle", "Siahaan", "test@gmail.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
-signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
+// signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
