@@ -1,5 +1,7 @@
 /*
-  This file contains function that can be called when a User signs up for an account
+  This file contains function that can be called when a User signs up for an account:
+    - signUpStudent
+    - signUpRecruiter
 */
 
 const config = require('./config/config.js')
@@ -26,7 +28,7 @@ function validateEmail(email) {
 }
 
 /*
-  Function to be called when a Student signs up - logs value into the DB
+  Function to be called when a Student signs up and logs value into the DB
 
   PARAMETERS
     firstName : string
@@ -58,8 +60,8 @@ function validateEmail(email) {
       JPEG, PNG or JPG file of Student's profile picture
 
   RETURN VALUES
-    Err - If the values failed to be inserted into the DB, function will return error
-    Success - If the values are successfully inserted into the DB, function will return Success
+    Err - If the insert failed, function will return error
+    ID - If the insert is successful, function will return 1
 */
 async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, major, minor, club, honorStudent, resume, profileImage) {
   try {
@@ -73,8 +75,8 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
 
     // check validity of values
     if (typeof(firstName) != 'string' || typeof(lastName) != 'string' || typeof(major) != 'string' ||
-    typeof(minor) != 'string' || typeof(club) != 'string' || typeof(email) != 'string' || typeof(gradTerm) != 'string' ||
-    typeof(year) != 'number' || typeof(honorStudent) != 'boolean'){
+        typeof(minor) != 'string' || typeof(club) != 'string' || typeof(email) != 'string' || typeof(gradTerm) != 'string' ||
+        typeof(year) != 'number' || typeof(honorStudent) != 'boolean'){
       throw new TypeError("One or more parameters have the wrong type");
     }
     if (year < 1 && year > 5){
@@ -116,10 +118,73 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
   } finally {
     await client.close();
   }
+  return 1;
 }
 
-// test function - uncomment this to test the function
-// signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+
+/*
+  Function to be called when a Recruiter signs up and logs all values into the DB
+
+  PARAMETERS
+    firstName : string
+      First name of recruiter
+    lastName : string
+      Last name of recruiter
+    companyName : string
+      Company that the recruiter is working forr
+    email : string
+      Recruiter's email
+    profileImage : BinData
+      JPEG, PNG or JPG file of Student's profile picture
+
+  RETURN VALUES
+    Err - If the insert failed, function will return error
+    1 - If the insert is successful, function will return 1
+*/
+async function signUpRecruiter(firstName, lastName, companyName, email, profileImage) {
+  try {
+    // connect to database
+    await client.connect()
+      .catch(error => handleError(error));
+    console.log("Succesfully connected to DB...")
+
+    const database = client.db("test");
+    const col = database.collection("Recruiter");
+
+    // check validity of values
+    if (typeof(firstName) != 'string' || typeof(lastName) != 'string' ||
+        typeof(companyName) != 'string' || typeof(email) != 'string'){
+      throw new TypeError("One or more parameters have the wrong type");
+    }
+    if (!validateEmail(email)){
+      throw new Error("Email contains invalid characters");
+    }
+
+    // create doc to be inserted after checking for params
+    var doc = {
+      firstName:firstName,
+      lastName:lastName,
+      company:companyName,
+      email:email,
+      profileImage:profileImage
+    };
+
+    const result = await col.insertOne(doc)
+      .catch(error => handleError(error));
+    console.log(
+      `${result.insertedCount} documents were inserted with the _id: ${result.insertedId}`,
+    );
+  } finally {
+    await client.close();
+  }
+  return 1;
+}
+
+
+
+// TESTS - uncomment this to test the function
+// signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@gmail.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
+signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
