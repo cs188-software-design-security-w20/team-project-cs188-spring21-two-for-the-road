@@ -2,11 +2,11 @@
   /* The image used */
   position: fixed;
   top: 0;
-  padding-left: 65px;
-  width: 60%;
-  height: 100%;
+  margin-left: 85px;
+  width: 55%;
+  height:100%;
   background-size: cover;
-  background-image: url(./images/int.png);
+  background-image: url(./images/intro.gif);
   z-index: -1;
 }
 .header{
