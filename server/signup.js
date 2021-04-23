@@ -14,7 +14,7 @@ const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUn
 const express = require('express')
 const app = express()
 require('dotenv').config({path: './config/config.env'})
-
+const GOOD_SIGN_UP = 1;
 /*
   Function that validates that an email address only contains unicode
 
@@ -118,7 +118,7 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
   } finally {
     await client.close();
   }
-  return 1;
+  return GOOD_SIGN_UP;
 }
 
 
@@ -177,14 +177,14 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
   } finally {
     await client.close();
   }
-  return 1;
+  return GOOD_SIGN_UP;
 }
 
 
 
 // TESTS - uncomment this to test the function
-// signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
-// signUpStudent("Arabelle", "Siahaan", "test@gmail.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
-// signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
-// signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
-// signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
+signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+signUpStudent("Arabelle", "Siahaan", "test@gmail.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
+signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
