@@ -12,6 +12,7 @@ class App extends React.Component {
       method: "POST",
       body: formData
     }).then(r => {
+      console.log("Sent image and got response!");
       console.log(r);
     });
 

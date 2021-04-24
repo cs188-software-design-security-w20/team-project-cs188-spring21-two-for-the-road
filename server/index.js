@@ -66,6 +66,9 @@ app.get("/:filename", (req, res) => {
     }
 
     // Check if image
+    if (file.contentType === "application/pdf")
+      // figure out what to do here
+      ;
     if (file.contentType === "image/jpeg" || file.contentType === "image/png") {
       // Read output to browser
       const readstream = gfs.createReadStream(file.filename);
