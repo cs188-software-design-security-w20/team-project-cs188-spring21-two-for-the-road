@@ -11,6 +11,9 @@ const express = require('express')
 const app = express()
 require('dotenv').config({path: './config/config.env'})
 
+const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+
+
 const PORT = process.env.PORT || config.app.port || 5000;
 const NODE_ENV = process.env.PORT || config.app.node_env;
 
@@ -28,16 +31,8 @@ const server = app.listen(port, () => {
     - signUpRecruiter
 */
 
-const config = require('./config/config.js')
-// const mongoose = require('mongoose')
-const { app: {port, node_env}, database: { username, password, db } } = config;
-const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
-
-const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-
-const express = require('express')
-const app = express()
-require('dotenv').config({path: './config/config.env'})
+// const { app: {port, node_env}, database: { username, password, db } } = config;
+// const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
 
 /*
   Function that validates that an email address only contains unicode
