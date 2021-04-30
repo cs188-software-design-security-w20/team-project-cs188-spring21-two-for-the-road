@@ -14,10 +14,12 @@ var jsonParser = bodyParser.json()
 require('dotenv').config({path: './config/config.env'})
 
 const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-
+const signUpRoute = require ('./routes/signUp.js');
 
 const PORT = process.env.PORT || config.app.port || 5000;
 const NODE_ENV = process.env.PORT || config.app.node_env;
+
+// const programmingLanguagesRouter = require('./routes/programmingLanguages');
 
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).
   catch(error => handleError(error));
@@ -232,15 +234,18 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
 // };
 ////////////////////////////////////////////////
 
-app.post('/signup', jsonParser, async (req, res) => {
-  const user = req.body;
-  try {
-    const username = user["username"];
-    const password = user["password"];
-    await signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
-    return res.status(200).send(username+" : " + password);
-  } catch (err) {
-      return res.status(404).send(err.message)
-  }
-})
+// app.post('/signup', jsonParser, async (req, res) => {
+//   const user = req.body;
+//   try {
+//     const username = user["username"];
+//     const password = user["password"];
+//     await signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+//     return res.status(200).send(username+" : " + password);
+//   } catch (err) {
+//       return res.status(404).send(err.message)
+//   }
+// })
 
+app.use('/signup', signUpRoute);
+
+// app.use('/programming-languages', programmingLanguagesRouter);
