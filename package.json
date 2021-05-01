@@ -1,0 +1,20 @@
+{
+  "name": "team-project-cs188-spring21-two-for-the-road",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cs188-software-design-security-w20/team-project-cs188-spring21-two-for-the-road.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cs188-software-design-security-w20/team-project-cs188-spring21-two-for-the-road/issues"
+  },
+  "homepage": "https://github.com/cs188-software-design-security-w20/team-project-cs188-spring21-two-for-the-road#readme"
+}
