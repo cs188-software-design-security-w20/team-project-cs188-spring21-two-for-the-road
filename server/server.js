@@ -16,7 +16,7 @@ require('dotenv').config({path: './config/config.env'})
 const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 const signUpRoute = require ('./routes/signUp.js');
 
-const port = process.env.PORT || config.app.port || 5000;
+const my_port = process.env.PORT || 5000;
 const NODE_ENV = process.env.PORT || config.app.node_env;
 
 // const programmingLanguagesRouter = require('./routes/programmingLanguages');
@@ -26,7 +26,7 @@ mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).
   console.log("Succesfully connected to DB...")
 
   // .listen(process.env.PORT || 5000)
-const server = app.listen(port, () => {
+const server = app.listen(my_port, () => {
     console.log("Server started in " + node_env + " environment on port: " + port);
 });
 
