@@ -1,19 +1,18 @@
 import React, { Component, Fragment } from 'react'
-import "./App.css";
-import Header from "./components/Header"
-import Login from "./components/Login"
+import {BrowserRouter, Route, Switch} from "react-router-dom"
+//import "./App.css";
+//import Header from "./components/Header"
+import Home from "./pages/Home"
+import Signup from "./pages/Signup"
 
-
-
-export default class App extends Component {
-	render() {
-		return (
-			<div>
-				<Header />
-				<div className='Home-intro'>
-				</div>
-				<div className='login-form'><Login /> </div>
-			</div>
-		)
-	}
-}
+const App = (props) => {
+	return (
+		<BrowserRouter >
+			<Switch>
+				<Route path="/" exact component= {Home} ></Route>
+				<Route path="/signup" component= {Signup} ></Route>
+			</Switch>
+			</BrowserRouter>
+	);
+  }
+  export default App

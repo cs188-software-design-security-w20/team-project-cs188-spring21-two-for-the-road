@@ -9,6 +9,17 @@
   background-image: url(./images/intro.gif);
   z-index: -1;
 }
+.Signup-intro {
+	/* The image used */
+	position: fixed;
+	top: 0;
+	margin-left: 31px;
+	width: 55%;
+	height:100%;
+	background-size: cover;
+	background-image: url(./images/Resume-amico.png);
+	z-index: -1;
+  }
 .header{
 position: fixed;
   background-color: #474463;
@@ -34,3 +45,19 @@ position: fixed;
   top: 120px;  
   width: 100%;
 }
+.form-selector {
+	left: 943px;
+	top:90px;
+	position: fixed;
+	width: 100%;
+  }
+  
+  .form-control {
+	width: 32% !important;
+  }
+  
+  .stepOne-signup{
+	  background-color: aqua;
+	 
+  }
+  
