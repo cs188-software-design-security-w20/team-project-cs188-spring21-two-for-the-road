@@ -36,9 +36,12 @@ class Login extends Component {
 			username: '',
 			password: '',
 			validate: {
-				emailState: '',
+				emailState: 'danger',
+				passwordState : 'danger'
 			},
-			isVerified: false
+			isVerified: false,
+			fields: {},
+            errors: {}
 		}
 		
 	}
@@ -46,10 +49,42 @@ class Login extends Component {
 		console.log('Done!!!!');
 	  };
 
+	  validateEmail(e) {
+		const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		const { validate } = this.state
+		if ((emailRex.test(e.target.value) && e.target.value.includes('ucla.edu'))  || e.target.value === "") {
+			validate.emailState = 'has-success'
+		} else {
+			validate.emailState = 'has-danger'
+		}
+		this.setState({ validate })
+	}
+
+	passwordValidate(e){
+		const { validate } = this.state
+		var re = /^(?=(?:[^a-z]*[a-z]){2})(?=(?:[^0-9]*[0-9]){2})(?=.*[!-\/:-@\[-`{-~]).{8,40}$/;
+		if(re.test(e.target.value) ){
+			validate.passwordState = 'has-success'
+			
+
+		}
+		else {
+			validate.passwordState = 'has-danger'
+		}
+	}
+
 	onSubmit = e =>{
         //this.props.clearErrors();
         e.preventDefault();
-       if(this.state.isVerified) {
+		if(this.state.validate.emailState === "has-danger" || this.state.validate.emailState === "danger"){
+			alert("Something is wrong with your inputs: Your email should be a valid UCLA Email and not empty!")
+	
+		   }
+		   if(this.state.validate.passwordState === "has-danger" || this.state.validate.passwordState === "danger"){
+			alert("Something is wrong with your inputs: Your password should be between between 8 and 40 characters!")
+	
+		   }
+       else if(this.state.isVerified) {
 		
 		const {email, password} = this.state;
         //Create User Object
@@ -61,6 +96,7 @@ class Login extends Component {
           
         }
 	   }
+	    
 	   else {
 		   alert("Please verify that you are a human!")
 	   }
@@ -70,16 +106,11 @@ class Login extends Component {
        // console.log(`The message is : ${this.state.msg}`);
 
     }
-	validateEmail(e) {
-		const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		const { validate } = this.state
-		if (emailRex.test(e.target.value)) {
-			validate.emailState = 'has-success'
-		} else {
-			validate.emailState = 'has-danger'
-		}
-		this.setState({ validate })
-	}
+
+
+	
+
+
 	verifyCallback = (response) => {
 		if (response) {
 			this.setState({
@@ -139,7 +170,20 @@ class Login extends Component {
 														<FontAwesomeIcon icon={faLock} />
 													</span>
 												</div>
-												<Input type="password" name='password' id='password' placeholder="Password" onChange={this.changeValue} />
+												<Input type="password" name='password' id='password' placeholder="Password" 
+												valid={this.state.validate.passwordState === 'has-success'}
+												invalid={this.state.validate.passwordState === 'has-danger'}
+												onChange={(e) =>{
+													this.passwordValidate(e)
+													this.changeValue(e)
+												}
+													} />
+													<FormFeedback valid>
+													Your password looks good.
+              </FormFeedback>
+												<FormFeedback>
+													Uh oh! Looks like there is an issue with your email. Please input a correct email.
+              </FormFeedback>
 											</InputGroup>
 											<Row>
 												<Col xs="12" lg="6">
