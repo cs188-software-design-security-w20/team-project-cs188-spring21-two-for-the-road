@@ -4,8 +4,8 @@
 const config = require('./config/config.js')
 
 const mongoose = require('mongoose')
-// const { app: {port, node_env}, database: { username, password, db } } = config;
-// const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
+ const { app: {port, node_env}, database: { username, password, db } } = config;
+ const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
 
 const express = require('express')
 const app = express()
