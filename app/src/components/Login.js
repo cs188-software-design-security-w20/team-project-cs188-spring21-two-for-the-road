@@ -161,7 +161,7 @@ class Login extends Component {
 													Your Email looks good.
               </FormFeedback>
 												<FormFeedback>
-													Uh oh! Looks like there is an issue with your email. Please input a correct email.
+													Uh oh! Looks like there is an issue with your email. Please input a correct UCLA email.
               </FormFeedback>
 											</InputGroup>
 											<InputGroup className="mb-4">
