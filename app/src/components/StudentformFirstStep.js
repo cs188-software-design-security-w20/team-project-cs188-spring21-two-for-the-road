@@ -27,7 +27,7 @@ export default class StudentformFirstStep extends Component {
 	
 		   }
 		   else if(this.state.validate.lasNameState === "has-danger" || this.state.validate.lasNameState === "danger"){
-			alert("Something is wrong with your inputs: Your last nname is required and it should be only characters and spaces")
+			alert("Something is wrong with your inputs: Your last name is required and it should be only characters and spaces")
 	
 		   }
 		   else{
@@ -100,7 +100,7 @@ export default class StudentformFirstStep extends Component {
 							Your first name looks good.
              		    </FormFeedback>
 						<FormFeedback>
-							Uh oh! Looks like there is an issue with your first name. Please input a correct email.
+							Uh oh! Looks like there is an issue with your first name. Please input a correct first name.
               			</FormFeedback>
 
 					</FormGroup>
@@ -119,7 +119,7 @@ export default class StudentformFirstStep extends Component {
 							Your last name looks good.
              		    </FormFeedback>
 						<FormFeedback>
-							Uh oh! Looks like there is an issue with your last name. Please input a correct email.
+							Uh oh! Looks like there is an issue with your last name. Please input a correct last name.
               			</FormFeedback>
 					</FormGroup>
 					<FormGroup>
@@ -137,7 +137,7 @@ export default class StudentformFirstStep extends Component {
 							Your Email looks good.
              		    </FormFeedback>
 						<FormFeedback>
-							Uh oh! Looks like there is an issue with your email. Please input a correct email.
+							Uh oh! Looks like there is an issue with your email. Please input a correct UCLA email.
               			</FormFeedback>
 					</FormGroup>
 					<Button onClick={this.continue} >Next Step</Button>
