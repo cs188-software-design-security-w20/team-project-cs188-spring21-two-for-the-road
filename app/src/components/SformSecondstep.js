@@ -7,7 +7,7 @@ export default class StudentformSecontStep extends Component {
 		e.preventDefault()
 		this.props.nextStep()
 	}
-	continue = e => {
+	back = e => {
 		e.preventDefault()
 		this.props.prevStep()
 	}
@@ -35,15 +35,15 @@ export default class StudentformSecontStep extends Component {
         <legend>Select what applies to you:</legend>
         <FormGroup check>
           <Label check>
-            <Input type="radio" name="radio1" value="student" onChange = {handleChange('password')}/>{' '}
-            Are you a student?
+            <Input type="radio" name="StudentORrecruiter" value="student" onChange = {handleChange('StudentORrecruiter')}/>{' '}
+            I am a student?
           </Label>
         </FormGroup>
 
         <FormGroup check>
           <Label check>
-            <Input type="radio" name="radio1" value="recruiter"  onChange = {handleChange('password')}/>{' '}
-           Are you a recruiter?
+            <Input type="radio" name="StudentORrecruiter" value="recruiter"  onChange = {handleChange('StudentORrecruiter')}/>{' '}
+           I am a recruiter?
           </Label>
         </FormGroup>
 		</FormGroup>

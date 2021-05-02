@@ -60,4 +60,9 @@ position: fixed;
 	  background-color: aqua;
 	 
   }
+  .user-status{
+	float: left;
+	clear: none;
+	margin: 2px 0 0 2px;
+  }
   
