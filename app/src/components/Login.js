@@ -62,7 +62,8 @@ class Login extends Component {
 
 	passwordValidate(e){
 		const { validate } = this.state
-		var re = /^(?=(?:[^a-z]*[a-z]){2})(?=(?:[^0-9]*[0-9]){2})(?=.*[!-\/:-@\[-`{-~]).{8,40}$/;
+		var re = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,40})");
+
 		if(re.test(e.target.value) ){
 			validate.passwordState = 'has-success'
 			
