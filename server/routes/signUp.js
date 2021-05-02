@@ -1,46 +1,21 @@
-/*
-  This file connects to MongoDB database in the cloud server
-*/
-const config = require('./config/config.js')
-
-const mongoose = require('mongoose')
-// const { app: {port, node_env}, database: { username, password, db } } = config;
-// const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
-
+// const express = require('express')
 const express = require('express')
-const app = express()
-var bodyParser = require('body-parser')
-var jsonParser = bodyParser.json()
-require('dotenv').config({path: './config/config.env'})
-
-const cors = require('cors')
-
-
-const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-
-
-const PORT = process.env.PORT || config.app.port || 5000;
-const NODE_ENV = process.env.NODE_ENV || config.app.node_env;
-
-
-// mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}).
-//   catch(error => handleError(error));
-//   console.log("Succesfully connected to DB...")
-
-
-
-const server = app.listen(port, () => {
-    console.log("Server started in " + NODE_ENV  + " environment on port: " + PORT);
-});
-
+const router = express.Router()
 /*
   This file contains function that can be called when a User signs up for an account:
     - signUpStudent
     - signUpRecruiter
 */
 
-// const { app: {port, node_env}, database: { username, password, db } } = config;
-// const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
+const config = require('../config/config.js')
+// const mongoose = require('mongoose')
+const { app: {port, node_env}, database: { username, password, db } } = config;
+const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
+
+const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+
+const app = express()
+require('dotenv').config({path: './config/config.env'})
 
 /*
   Function that validates that an email address only contains unicode
@@ -90,10 +65,6 @@ function validateEmail(email) {
     Err - If the insert failed, function will return error
     ID - If the insert is successful, function will return 1
 */
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-// WE NEED TO BUILD A CUSTOM STUDENT OBJECT THAT CAN DIRECTLY BE SENT TO THE BACKEND FROM THE FRONT-END
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, major, minor, club, honorStudent, resume, profileImage) {
   try {
     // connect to database
@@ -220,33 +191,14 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
 // signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
 
-
-///////////////////////////////////////////////////
-// ASSUMING BELOW FORMAT FOR USER SENDING DATA
-// var doc = {
-//   firstName:firstName,
-//   lastName:lastName,
-//   email:email,
-//   sid:sid,
-//   year:year,
-//   major:major,
-//   minor:minor,
-//   club:club,
-//   honorStudent:honorStudent,
-//   resume:resume,
-//   profileImage:profileImage
-// };
-////////////////////////////////////////////////
-
-app.post('/signup', jsonParser, async (req, res) => {
-  const user = req.body;
-  try {
-    const username = user["username"];
-    const password = user["password"];
+router.get('/', async (req,res,next) => {
+    // await signUpStudent()
     await signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
-    return res.status(200).send(username+" : " + password);
-  } catch (err) {
-      return res.status(404).send(err.message)
-  }
-})
+    res.status(200).json(
+        {
+            "message" : "Using a GET in /signup"
+        }
+    );
+});
 
+module.exports = router;
