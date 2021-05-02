@@ -47,8 +47,8 @@ export default class StudentformSecontStep extends Component {
           </Label>
         </FormGroup>
 		</FormGroup>
+	<Button className="mx-2" onClick={this.back} > Previeus step</Button>
 	  <Button onClick={this.continue} >Next Step</Button>
-	  <Button onClick={this.back} > Previeus step</Button>
 			</form>
 			</div>
 		)

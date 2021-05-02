@@ -4,6 +4,9 @@ import "../App.css";
 import Header from "../components/Header"
 import StudentformFirstStep from './StudentformFirstStep'
 import SformSecondstep from './SformSecondstep'
+import SformThirdStep from './SformThirdStep'
+import SformfourthStep from './SformfourthStep'
+import CompanyForm from './CompanyForm'
 
 export default class FormeChose extends Component {
 	
@@ -109,12 +112,51 @@ export default class FormeChose extends Component {
 					</div>
 				)
 				case 3: 
-					return (
-					<div className ="form-selector">
-					<h1>case 3</h1>
-					</div>
-				)
-
+					if(this.state.StudentORrecruiter === 'student'){
+						return (
+							<div className ="form-selector">
+								<SformThirdStep
+								nextStep = {this.nextStep}
+								prevStep = {this.prevStep }
+								handleChange = {this.handleChange}
+								values = {values}
+							/>
+							</div>
+						)
+					}
+					else if (this.state.StudentORrecruiter === 'recruiter'){
+						return (
+							<div className ="form-selector">
+								<CompanyForm
+								nextStep = {this.nextStep}
+								prevStep = {this.prevStep }
+								handleChange = {this.handleChange}
+								values = {values}
+							/>
+							</div>
+						)
+					}
+				case 4:
+					if(this.state.StudentORrecruiter === 'student'){
+						return (
+							<div className ="form-selector">
+								<SformfourthStep
+								nextStep = {this.nextStep}
+								prevStep = {this.prevStep }
+								handleChange = {this.handleChange}
+								values = {values}
+							/>
+							</div>
+						)
+					}
+					else if (this.state.StudentORrecruiter === 'recruiter'){
+						return (
+							<div className ="form-selector">
+							<h1>company form</h1>
+							</div>
+						)
+					}
+					
 			}
 
 		
