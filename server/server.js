@@ -15,6 +15,7 @@ require('dotenv').config({path: './config/config.env'})
 
 const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 const signUpRoute = require ('./routes/signUp.js');
+const loginRoute = require ('./routes/login.js');
 
 const my_port = process.env.PORT || 5000;
 const NODE_ENV = process.env.PORT || config.app.node_env;
@@ -36,7 +37,8 @@ const server = app.listen(my_port, () => {
 });
 
 
-
+app.use(jsonParser);
 app.use('/signup', signUpRoute);
+app.use('/login', loginRoute);
 
 // app.use('/programming-languages', programmingLanguagesRouter);
