@@ -6,10 +6,7 @@ const router = express.Router()
     - signUpStudent
     - signUpRecruiter
 */
-var bodyParser = require('body-parser')
-const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+
 const config = require('../config/config.js')
 // const mongoose = require('mongoose')
 const { app: {port, node_env}, database: { username, password, db } } = config;
@@ -17,9 +14,9 @@ const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}
 
 const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 
+const app = express()
 require('dotenv').config({path: './config/config.env'})
 
-// app.use(bodyParser);
 /*
   Function that validates that an email address only contains unicode
 
@@ -200,15 +197,12 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
 // signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
 
-router.post('/', async (req,res,next) => {
+router.get('/', async (req,res,next) => {
     // await signUpStudent()
-    console.log(req.query)
-    let type_of_user = req.body;
-    console.log(type_of_user);
     await signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
     res.status(200).json(
         {
-            "message" : "Using a GET in /signup"
+            "message" : "Using a GET in /login"
         }
     );
 });
