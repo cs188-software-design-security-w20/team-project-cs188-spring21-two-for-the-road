@@ -13,7 +13,7 @@ var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
 require('dotenv').config({path: './config/config.env'})
 
-const cors = require('cors')
+// const cors = require('cors')
 
 
 const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
