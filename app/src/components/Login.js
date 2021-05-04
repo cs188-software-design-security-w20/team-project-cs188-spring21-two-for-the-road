@@ -1,6 +1,7 @@
 import { Redirect, useHistory } from "react-router-dom"
 import React, { Component, Fragment } from 'react';
 import Recaptcha from 'react-recaptcha';
+import validator from 'validator'
 
 import { faUserAlt, faSignInAlt, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,7 +38,7 @@ class Login extends Component {
 			password: '',
 			validate: {
 				emailState: 'danger',
-				passwordState : 'danger'
+				passwordState : 'danger',
 			},
 			isVerified: false,
 			fields: {},
@@ -48,6 +49,8 @@ class Login extends Component {
 	callback =  () => {
 		console.log('Done!!!!');
 	  };
+
+
 
 	  validateEmail(e) {
 		const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

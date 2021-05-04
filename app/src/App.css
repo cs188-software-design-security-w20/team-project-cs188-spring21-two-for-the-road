@@ -65,4 +65,11 @@ position: fixed;
 	clear: none;
 	margin: 2px 0 0 2px;
   }
-  
+  .invalid-pass{
+	font-weight: bold;
+	color: red
+  }
+  .valid-pass{
+	font-weight: bold;
+	color: green
+  }
