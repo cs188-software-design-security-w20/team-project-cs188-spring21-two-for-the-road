@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom"
 //import Header from "./components/Header"
 import Home from "./pages/Home"
 import Signup from "./pages/Signup"
+import listOfJobs from './pages/listOfJobs'
 
 const App = (props) => {
 	return (
@@ -11,6 +12,7 @@ const App = (props) => {
 			<Switch>
 				<Route path="/" exact component= {Home} ></Route>
 				<Route path="/signup" component= {Signup} ></Route>
+				<Route path="/job-apps" component= {listOfJobs} ></Route>
 			</Switch>
 			</BrowserRouter>
 	);
