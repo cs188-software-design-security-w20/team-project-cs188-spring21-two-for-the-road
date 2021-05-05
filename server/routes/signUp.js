@@ -1,5 +1,6 @@
 // const express = require('express')
-const express = require('express')
+const express = require('express');
+const bcrypt = require('bcryptjs');
 const router = express.Router()
 /*
   This file contains function that can be called when a User signs up for an account:
@@ -72,7 +73,7 @@ function validateEmail(email) {
     Err - If the insert failed, function will return error
     ID - If the insert is successful, function will return 1
 */
-async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, major, minor, club, honorStudent, resume, profileImage) {
+async function signUpStudent(firstName, lastName, email, password, sid, year, gradTerm, major, minor, club, honorStudent, resume, profileImage) {
   try {
     // connect to database
     await client.connect()
@@ -97,6 +98,8 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
     if (!validateEmail(email) || !email.includes("ucla.edu")){
       throw new Error("Email contains invalid characters or is not UCLA email");
     }
+    var salt = bcrypt.genSaltSync(10);
+    var hashed_password = bcrypt.hashSync(password, salt);
     var gradQ1 = gradTerm.charAt(0);
     var gradQ2 = gradTerm.substring(0,1);
     if (!(gradQ2.includes("Sp") || gradQ1.includes("F") || gradQ1.includes("W") ||
@@ -109,6 +112,7 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
       firstName:firstName,
       lastName:lastName,
       email:email,
+      hashed_password:hashed_password,
       sid:sid,
       year:year,
       major:major,
@@ -151,7 +155,7 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
     Err - If the insert failed, function will return error
     1 - If the insert is successful, function will return 1
 */
-async function signUpRecruiter(firstName, lastName, companyName, email, profileImage) {
+async function signUpRecruiter(firstName, lastName, companyName, email, password, profileImage) {
   try {
     // connect to database
     await client.connect()
@@ -169,6 +173,8 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
     if (!validateEmail(email)){
       throw new Error("Email contains invalid characters");
     }
+    var salt = bcrypt.genSaltSync(10);
+    var hashed_password = bcrypt.hashSync(password, salt);
 
     // create doc to be inserted after checking for params
     var doc = {
@@ -176,6 +182,7 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
       lastName:lastName,
       company:companyName,
       email:email,
+      hashed_password:hashed_password,
       profileImage:profileImage
     };
 
@@ -206,7 +213,7 @@ router.post('/', async (req,res,next) => {
     console.log(req.query)
     let type_of_user = req.body;
     console.log(type_of_user);
-    await signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+    await signUpStudent("Test2", "Test", "test2@ucla.edu", "password1234", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
     res.status(200).json(
         {
             "message" : "Using a GET in /signup"
