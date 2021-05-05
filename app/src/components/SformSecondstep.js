@@ -23,7 +23,7 @@ export default class StudentformSecontStep extends Component {
 	continue = e => {
 		e.preventDefault()
 		const {values} = this.props
-		if(!values.password ){
+		if(!values.password || this.state.validate.passwordError === "Is Not Strong Password"){
 			alert("Something is wrong with your inputs: Password is required to signup!")
 
 		}
