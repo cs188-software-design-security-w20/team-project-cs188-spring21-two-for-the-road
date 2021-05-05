@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom"
 import Home from "./pages/Home"
 import Signup from "./pages/Signup"
 import listOfJobs from './pages/listOfJobs'
+// import Table from './pages/listOfJobs'
 
 const App = (props) => {
 	return (
