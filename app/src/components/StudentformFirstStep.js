@@ -18,16 +18,17 @@ export default class StudentformFirstStep extends Component {
 
 	continue = e => {
 		e.preventDefault()
-		if (this.state.validate.firstNameState === "has-danger" || this.state.validate.firstNameState === "danger") {
+		const {values} = this.props
+		if (!values.firstName ) {
 			alert("Something is wrong with your inputs: Your first name is required and it should be only characters and spaces")
 
 		}
 
-		else if (this.state.validate.lasNameState === "has-danger" || this.state.validate.lasNameState === "danger") {
+		else if (!values.lastName ) {
 			alert("Something is wrong with your inputs: Your last name is required and it should be only characters and spaces")
 
 		}
-		else if (this.state.validate.emailState === "has-danger" || this.state.validate.emailState === "danger") {
+		else if (!values.email) {
 			alert("Something is wrong with your inputs: Your email should be a valid UCLA Email and not empty!")
 
 		}
@@ -40,6 +41,7 @@ export default class StudentformFirstStep extends Component {
 
 	firstvalidation(e) {
 		const { validate } = this.state
+		const { values, handleChange, nextStep } = this.props
 		var reg = /^[a-zA-Z\s]*$/;
 		if (reg.test(e.target.value)) {
 			validate.firstNameState = 'has-success'
@@ -48,6 +50,8 @@ export default class StudentformFirstStep extends Component {
 			validate.firstNameState = 'has-danger'
 		}
 		this.setState({ validate })
+		
+
 
 	}
 
@@ -87,14 +91,14 @@ export default class StudentformFirstStep extends Component {
 					<FormGroup >
 						<Label for="firstName" >Your first name</Label>
 						<Input className="form-control" type="text" name="firstName" id="firstName"
-
-							onChange={(e) => {
+							onChange={
+							e => {
+								handleChange(e.target.name, e.target.value);
 								this.firstvalidation(e)
-								handleChange('firstName')
 							}}
 							valid={this.state.validate.firstNameState === 'has-success'}
 							invalid={this.state.validate.firstNameState === 'has-danger'}
-							Value={values.firstName}
+							defaultValue={values.firstName}
 						/>
 						<FormFeedback valid>
 							Your first name looks good.
@@ -107,13 +111,13 @@ export default class StudentformFirstStep extends Component {
 					<FormGroup>
 						<Label for="lastName">Your last name</Label>
 						<Input type="text" name="lastName" id="lastName"
-							onChange={(e) => {
+							onChange={e => {
+								handleChange(e.target.name, e.target.value);
 								this.Lastvalidation(e)
-								handleChange('lastName')
 							}}
 							valid={this.state.validate.lasNameState === 'has-success'}
 							invalid={this.state.validate.lasNameState === 'has-danger'}
-							Value={values.lastName}
+							defaultValue={values.lastName}
 						/>
 						<FormFeedback valid>
 							Your last name looks good.
@@ -125,14 +129,15 @@ export default class StudentformFirstStep extends Component {
 					<FormGroup>
 						<Label for="email">Your email</Label>
 						<Input type="text" name="email" id="email" placeholder="Email"
-							onChange={(e) => {
+							onChange={e => {
+								handleChange(e.target.name, e.target.value);
 								this.validateEmail(e)
-								handleChange('email')
+								
 							}
 							}
 							valid={this.state.validate.emailState === 'has-success'}
 							invalid={this.state.validate.emailState === 'has-danger'}
-							Value={values.email}
+							defaultValue={values.email}
 						/>
 						<FormFeedback valid>
 							Your Email looks good.
