@@ -5,6 +5,7 @@
 */
 
 const config = require('./config/config.js')
+const user = require('./user.js')
 // const mongoose = require('mongoose')
 const { app: {port, node_env}, database: { username, password, db } } = config;
 const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
@@ -35,6 +36,8 @@ function validateEmail(email) {
       First name of student
     lastName : string
       Last name of student
+    password : string
+      Password specified by the user
     email : string
       Student's email - check that it ends with ucla.edu
     sid : string
@@ -61,9 +64,9 @@ function validateEmail(email) {
 
   RETURN VALUES
     Err - If the insert failed, function will return error
-    ID - If the insert is successful, function will return 1
+    User - If the insert is successful, function will return a User object
 */
-async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, major, minor, club, honorStudent, resume, profileImage) {
+async function signUpStudent(firstName, lastName, password, email, sid, year, gradTerm, major, minor, club, honorStudent, resume, profileImage) {
   try {
     // connect to database
     await client.connect()
@@ -99,6 +102,7 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
     var doc = {
       firstName:firstName,
       lastName:lastName,
+      password:password,
       email:email,
       sid:sid,
       year:year,
@@ -110,6 +114,7 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
       profileImage:profileImage
     };
 
+    s = new Student(firstName, lastName, email, sid, year, major, minor, club, honorStudent, resume, profileImage);
     const result = await col.insertOne(doc)
       .catch(error => handleError(error));
     console.log(
@@ -118,7 +123,7 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
   } finally {
     await client.close();
   }
-  return 1;
+  return s;
 }
 
 
@@ -130,6 +135,8 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
       First name of recruiter
     lastName : string
       Last name of recruiter
+    password : string
+      Password specified by the user
     companyName : string
       Company that the recruiter is working forr
     email : string
@@ -141,7 +148,7 @@ async function signUpStudent(firstName, lastName, email, sid, year, gradTerm, ma
     Err - If the insert failed, function will return error
     1 - If the insert is successful, function will return 1
 */
-async function signUpRecruiter(firstName, lastName, companyName, email, profileImage) {
+async function signUpRecruiter(firstName, lastName, password, companyName, email, profileImage) {
   try {
     // connect to database
     await client.connect()
@@ -164,10 +171,13 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
     var doc = {
       firstName:firstName,
       lastName:lastName,
+      password:password,
       company:companyName,
       email:email,
       profileImage:profileImage
     };
+
+    r = new Recruiter(firstName, lastName, email, companyName, profileImage);
 
     const result = await col.insertOne(doc)
       .catch(error => handleError(error));
@@ -177,13 +187,13 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
   } finally {
     await client.close();
   }
-  return 1;
+  return u;
 }
 
 
 
 // TESTS - uncomment this to test the function
-// signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+// s = signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@gmail.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
