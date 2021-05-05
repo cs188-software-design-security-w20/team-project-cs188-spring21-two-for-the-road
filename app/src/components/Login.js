@@ -34,7 +34,7 @@ class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			username: '',
+			email: '',
 			password: '',
 			validate: {
 				emailState: 'danger',
@@ -55,7 +55,7 @@ class Login extends Component {
 	  validateEmail(e) {
 		const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		const { validate } = this.state
-		if ((emailRex.test(e.target.value) && e.target.value.includes('ucla.edu'))  || e.target.value === "") {
+		if ((emailRex.test(e.target.value) && e.target.value.includes('ucla.edu'))) {
 			validate.emailState = 'has-success'
 		} else {
 			validate.emailState = 'has-danger'
@@ -67,7 +67,7 @@ class Login extends Component {
 		const { validate } = this.state
 		var re = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,40})");
 
-		if(re.test(e.target.value) ){
+		if(re.test(e.target.value)){
 			validate.passwordState = 'has-success'
 			
 

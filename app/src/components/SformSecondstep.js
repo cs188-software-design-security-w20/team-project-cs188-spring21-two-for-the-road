@@ -9,10 +9,12 @@ export default class StudentformSecontStep extends Component {
 		super(props);
 		this.state = {
 			password: "",
+			isSelect: false,
 			validate: {
 				passwordState : 'danger',
 				passwordError : "",
-				passwordConfirm: ""
+				passwordConfirm: "",
+				isConfirmed: false
 			},
 		}
 		
@@ -20,8 +22,24 @@ export default class StudentformSecontStep extends Component {
 
 	continue = e => {
 		e.preventDefault()
-		this.props.nextStep()
+		if(!this.state.password ){
+			alert("Something is wrong with your inputs: Password is required to signup!")
+
+		}
+		else if(!this.state.validate.isConfirmed){
+			alert("Something is wrong with your inputs: Your password confirmarion doesn't match!")
+
+		}
+		else if(!this.state.isSelect){
+			alert("Something is wrong with your inputs: Please select if you are a sudent or recruiter!")
+
+		}
+		else
+		{this.props.nextStep()}
+
 	}
+
+
 	back = e => {
 		e.preventDefault()
 		this.props.prevStep()
@@ -48,14 +66,22 @@ export default class StudentformSecontStep extends Component {
 		 })
 	}
 
+	selectconfirm(e){
+		this.setState({
+			isSelect : true
+		})
+	}
+
 	passwordValidate(e){
 		const { validate } = this.state
 		const {values} = this.props
 		if(e.target.value === this.state.password){
 			validate.passwordConfirm = "Passwords match"
+			validate.isConfirmed = true
 		}
 		else {
 			validate.passwordConfirm = "Passwords do not match"
+			validate.isConfirmed = false
 		}
 		this.setState({ validate })
 	}
@@ -99,14 +125,20 @@ export default class StudentformSecontStep extends Component {
         <legend>Select what applies to you:</legend>
         <FormGroup check>
           <Label check>
-            <Input type="radio" name="StudentORrecruiter" value="student" onChange = {handleChange('StudentORrecruiter')}/>{' '}
+            <Input type="radio" name="StudentORrecruiter" value="student" onChange = {
+				(e) => {
+					this.selectconfirm(e)
+					handleChange('StudentORrecruiter')}}/>{' '}
             I am a student?
           </Label>
         </FormGroup>
 
         <FormGroup check>
           <Label check>
-            <Input type="radio" name="StudentORrecruiter" value="recruiter"  onChange = {handleChange('StudentORrecruiter')}/>{' '}
+            <Input type="radio" name="StudentORrecruiter" value="recruiter"  onChange = {
+				(e) => {
+					this.selectconfirm(e)
+					handleChange('StudentORrecruiter')}}/>{' '}
            I am a recruiter?
           </Label>
         </FormGroup>
