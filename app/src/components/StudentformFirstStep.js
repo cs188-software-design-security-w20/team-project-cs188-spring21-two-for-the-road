@@ -19,16 +19,16 @@ export default class StudentformFirstStep extends Component {
 	continue = e => {
 		e.preventDefault()
 		const {values} = this.props
-		if (!values.firstName ) {
+		if (!values.firstName || this.state.validate.firstNameState ==="has-danger") {
 			alert("Something is wrong with your inputs: Your first name is required and it should be only characters and spaces")
 
 		}
 
-		else if (!values.lastName ) {
+		else if (!values.lastName || this.state.validate.lasttNameState ==="has-danger" ) {
 			alert("Something is wrong with your inputs: Your last name is required and it should be only characters and spaces")
 
 		}
-		else if (!values.email) {
+		else if (!values.email || this.state.validate.emailNameState ==="has-danger") {
 			alert("Something is wrong with your inputs: Your email should be a valid UCLA Email and not empty!")
 
 		}

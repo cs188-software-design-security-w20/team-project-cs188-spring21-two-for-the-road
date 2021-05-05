@@ -46,14 +46,15 @@ position: fixed;
   width: 100%;
 }
 .form-selector {
-	left: 943px;
-	top:90px;
+	left: 910px;
+	top:60px;
 	position: fixed;
 	width: 100%;
   }
   
   .form-control {
 	width: 32% !important;
+	height: 70% !important;
   }
   
   .stepOne-signup{
@@ -72,4 +73,7 @@ position: fixed;
   .valid-pass{
 	font-weight: bold;
 	color: green
+  }
+  .form-group {
+	  margin-bottom: 0.5rem !important;
   }
