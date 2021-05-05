@@ -20,7 +20,16 @@ export default class CompanyForm extends Component {
 
 			<FormGroup>
         <Label for="profileImage">Upload a profile picture</Label>
-        <Input type="file" name="profileImage" id="profileImage" />
+        <Input type="file" name="profileImage" id="profileImage" 
+		onChange = {
+			e => {
+			//this.passwordUpdate(e)
+			handleChange(e.target.name, e.target.value);
+			//this.validate(e.target.value);
+			//this.passwordUpdate(e)
+			
+		}}
+		/>
         <FormText color="muted">
           Only JPG or PNG files are allowed
         </FormText>
@@ -29,7 +38,7 @@ export default class CompanyForm extends Component {
 			<FormGroup>
         <Label for="companyName">Company name: </Label>
         <Input type="text" name="companyName" id="companyName" placeholder="" 
-		onChange = {handleChange('companyName')}
+		onChange = {e => handleChange(e.target.name, e.target.value)}
 		defaultValue={values.companyName}
 		/>
       </FormGroup>

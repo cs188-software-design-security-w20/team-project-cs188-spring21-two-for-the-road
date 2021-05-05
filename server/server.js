@@ -37,13 +37,14 @@ mongoose.createConnection(uri, {useNewUrlParser: true, useUnifiedTopology: true}
   
   console.log("Succesfully connected to DB...")
 
+
+app.use(jsonParser);
+app.use('/signup', signUpRoute);
+app.use('/login', loginRoute);
+
   // .listen(process.env.PORT || 5000)
 const server = app.listen(my_port, () => {
     console.log("Server started in " + node_env + " environment on port: " + my_port);
 });
 
-
-app.use(jsonParser);
-app.use('/signup', signUpRoute);
-app.use('/login', loginRoute);
 

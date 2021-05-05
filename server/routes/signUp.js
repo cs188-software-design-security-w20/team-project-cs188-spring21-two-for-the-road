@@ -201,6 +201,7 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
 // signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
 
 router.post('/', async (req,res,next) => {
+	
     // await signUpStudent()
     console.log(req.query)
     let type_of_user = req.body;

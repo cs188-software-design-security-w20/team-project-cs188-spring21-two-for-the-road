@@ -22,7 +22,8 @@ export default class StudentformSecontStep extends Component {
 
 	continue = e => {
 		e.preventDefault()
-		if(!this.state.password ){
+		const {values} = this.props
+		if(!values.password ){
 			alert("Something is wrong with your inputs: Password is required to signup!")
 
 		}
@@ -35,14 +36,25 @@ export default class StudentformSecontStep extends Component {
 
 		}
 		else
-		{this.props.nextStep()}
+	{
+			this.props.nextStep()
+		}
 
 	}
 
 
 	back = e => {
 		e.preventDefault()
+		// this.setState({
+		// 	validate: {
+		// 		passwordState : 'danger',
+		// 		passwordError : "",
+		// 		passwordConfirm: "",
+		// 		isConfirmed: false
+		// 	}
+		// })
 		this.props.prevStep()
+
 	}
 
 	validate = (value) => {
@@ -75,7 +87,7 @@ export default class StudentformSecontStep extends Component {
 	passwordValidate(e){
 		const { validate } = this.state
 		const {values} = this.props
-		if(e.target.value === this.state.password){
+		if(e.target.value === values.password){
 			validate.passwordConfirm = "Passwords match"
 			validate.isConfirmed = true
 		}
@@ -87,7 +99,7 @@ export default class StudentformSecontStep extends Component {
 	}
 
 	render() {
-		const { values, handleChange} = this.props
+		const { values, handleChange, nextStep} = this.props
 		return (
 		<div >
 			<h3 className="my-2">Make the most of your journey in UCLA</h3>
@@ -98,10 +110,13 @@ export default class StudentformSecontStep extends Component {
         <Input type="password" name="password" id="Password" placeholder="password" 
 		valid={this.state.validate.passwordState === 'has-success'}
 		invalid={this.state.validate.passwordState === 'has-danger'}
-		onChange = {(e) => {
-			this.passwordUpdate(e)
-			this.validate(e.target.value)
-			handleChange('password')
+		onChange = {
+			e => {
+			//this.passwordUpdate(e)
+			handleChange(e.target.name, e.target.value);
+			this.validate(e.target.value);
+			//this.passwordUpdate(e)
+			
 		}}
 		defaultValue={values.password}
 		/>
@@ -115,7 +130,8 @@ export default class StudentformSecontStep extends Component {
         <Label for="confirmPassword">Confirm password</Label>
         <Input type="password" name="confirmpassword" id="confirmPassword" placeholder="Confirm your password" 
 		onChange = {(e) => {
-			this.passwordValidate(e)
+			this.passwordValidate(e);
+			
 		}}
 		/>
 		<span className={this.state.validate.passwordConfirm === "Passwords do not match" ? 'invalid-pass' : 'valid-pass' }>{this.state.validate.passwordConfirm}</span>
@@ -127,8 +143,9 @@ export default class StudentformSecontStep extends Component {
           <Label check>
             <Input type="radio" name="StudentORrecruiter" value="student" onChange = {
 				(e) => {
-					this.selectconfirm(e)
-					handleChange('StudentORrecruiter')}}/>{' '}
+					handleChange(e.target.name, e.target.value);
+					this.selectconfirm(e);
+					}}/>
             I am a student?
           </Label>
         </FormGroup>
@@ -137,8 +154,9 @@ export default class StudentformSecontStep extends Component {
           <Label check>
             <Input type="radio" name="StudentORrecruiter" value="recruiter"  onChange = {
 				(e) => {
-					this.selectconfirm(e)
-					handleChange('StudentORrecruiter')}}/>{' '}
+					handleChange(e.target.name, e.target.value);
+					this.selectconfirm(e);
+					}}/>
            I am a recruiter?
           </Label>
         </FormGroup>
