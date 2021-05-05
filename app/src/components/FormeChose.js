@@ -24,7 +24,7 @@ export default class FormeChose extends Component {
 		minor: '',
 		club: '',
 		honorStudent: false,
-		resume: '',
+		resume: null,
 		profileImageUrl: null,
 		profileImage: null,
 		companyName: '',

@@ -28,7 +28,7 @@ export default class StudentformFirstStep extends Component {
 			alert("Something is wrong with your inputs: Your last name is required and it should be only characters and spaces")
 
 		}
-		else if (!values.email || this.state.validate.emailNameState ==="has-danger") {
+		else if (!values.email || this.state.validate.emailState ==="has-danger") {
 			alert("Something is wrong with your inputs: Your email should be a valid UCLA Email and not empty!")
 
 		}
