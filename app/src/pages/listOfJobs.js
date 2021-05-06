@@ -1,14 +1,11 @@
 import React from 'react'
 
 class listOfJobs extends React.Component {
+   
+   
   async getData() {
     //do mongowork here
-    ;
-  }
-  
-  constructor(props) {
-     super(props)
-     this.state = {
+      let result = {
         students: [
            { id: 1, name: 'Wasif', age: 21, email: 'wasif@email.com' },
            { id: 2, name: 'Ali', age: 19, email: 'ali@email.com' },
@@ -16,16 +13,23 @@ class listOfJobs extends React.Component {
            { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }
         ]
      }
+      this.setState(result);
   }
+  
+  async componentWillMount() {
+     await this.getData();
+  }
+  
 
-  renderTableHeader() {
+   renderTableHeader() {
+   // await this.componentDidMount();
      let header = Object.keys(this.state.students[0])
      return header.map((key, index) => {
         return <th key={index}>{key.toUpperCase()}</th>
      })
   }
 
-  renderTableData() {
+renderTableData() {
      return this.state.students.map((student, index) => {
         const { id, name, age, email } = student //destructuring
         return (
@@ -54,5 +58,4 @@ class listOfJobs extends React.Component {
   }
 }
 
-// ReactDOM.render(<Table />, document.getElementById('root'));
 export default listOfJobs;
