@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Header from "../components/Header"
 class listOfJobs extends React.Component {
    
    
@@ -46,6 +46,7 @@ renderTableData() {
   render() {
      return (
         <div>
+      <Header />
            <h1 id='title'>React Dynamic Table</h1>
            <table id='students'>
               <tbody>
