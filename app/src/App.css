@@ -77,3 +77,73 @@ position: fixed;
   .form-group {
 	  margin-bottom: 0.5rem !important;
   }
+
+
+.header__left {
+    display: flex;
+}
+.header__left > img {
+    object-fit: contain;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.header__search {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    height: 22px;
+    color: gray;
+    background-color: #eef3f8;
+}
+
+.header__search > input {
+    width: 300px;
+    outline: none;
+    border: none;
+    background: none;
+}
+.logo2{
+	font-size:35px;
+	margin-left:45px;
+	color:#474463 !important;
+  }
+
+  .search-bar{
+	left: 350px;
+	position: relative;
+	bottom: 45px;
+	color: white !important;
+	width: 70%;
+	
+  }
+  .search {
+	width: 55% !important;
+  }
+  .dropD{
+	left: 1200px;
+	position: relative;
+	bottom: 67px;
+	color: white !important;
+	width: 100%;
+
+  }
+  .joblink{
+	  color:white;
+  }
+  .imageRound{
+	position: absolute;
+	width: 3%;
+	border-radius: 50%;
+	left: -37px;
+	top: -3px
+  }
+  .dropD2{
+	left: 1050px;
+	position: relative;
+	bottom: 37px;
+	color: white !important;
+	width: 100%;
+
+  }

@@ -188,8 +188,6 @@ async function signUpRecruiter(firstName, lastName, companyName, email, profileI
   return 1;
 }
 
-
-
 // TESTS - uncomment this to test the function
 // signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@gmail.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
