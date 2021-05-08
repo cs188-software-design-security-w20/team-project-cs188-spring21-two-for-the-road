@@ -5,13 +5,13 @@
 */
 
 const config = require('./config/config.js')
-const user = require('./user.js')
+// import Student from './class/student.mjs'
+// import {Recruiter} from './class/user.js';
 // const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs');
 const { app: {port, node_env}, database: { username, password, db } } = config;
 const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
-
 const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-
 const express = require('express')
 const app = express()
 require('dotenv').config({path: './config/config.env'})
@@ -28,6 +28,7 @@ function validateEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 
+// TODO: finish returning classes
 /*
   Function to be called when a Student signs up and logs value into the DB
 
@@ -98,11 +99,14 @@ async function signUpStudent(firstName, lastName, password, email, sid, year, gr
       throw new Error("gradTerm has invalid format")
     }
 
+    var salt = bcrypt.genSaltSync(10);
+    var hashed_password = bcrypt.hashSync(password, salt);
+
     // create doc to be inserted after checking for params
     var doc = {
       firstName:firstName,
       lastName:lastName,
-      password:password,
+      password:hashed_password,
       email:email,
       sid:sid,
       year:year,
@@ -114,7 +118,7 @@ async function signUpStudent(firstName, lastName, password, email, sid, year, gr
       profileImage:profileImage
     };
 
-    s = new Student(firstName, lastName, email, sid, year, major, minor, club, honorStudent, resume, profileImage);
+    // s = new Student(firstName, lastName, email, sid, year, major, minor, club, honorStudent, resume, profileImage);
     const result = await col.insertOne(doc)
       .catch(error => handleError(error));
     console.log(
@@ -123,7 +127,7 @@ async function signUpStudent(firstName, lastName, password, email, sid, year, gr
   } finally {
     await client.close();
   }
-  return s;
+  return 1;
 }
 
 
@@ -146,7 +150,7 @@ async function signUpStudent(firstName, lastName, password, email, sid, year, gr
 
   RETURN VALUES
     Err - If the insert failed, function will return error
-    1 - If the insert is successful, function will return 1
+    User - If the insert is successful, function will return a User object
 */
 async function signUpRecruiter(firstName, lastName, password, companyName, email, profileImage) {
   try {
@@ -167,17 +171,20 @@ async function signUpRecruiter(firstName, lastName, password, companyName, email
       throw new Error("Email contains invalid characters");
     }
 
+    var salt = bcrypt.genSaltSync(10);
+    var hashed_password = bcrypt.hashSync(password, salt);
+
     // create doc to be inserted after checking for params
     var doc = {
       firstName:firstName,
       lastName:lastName,
-      password:password,
+      password:hashed_password,
       company:companyName,
       email:email,
       profileImage:profileImage
     };
 
-    r = new Recruiter(firstName, lastName, email, companyName, profileImage);
+    // r = new Recruiter(firstName, lastName, email, companyName, profileImage);
 
     const result = await col.insertOne(doc)
       .catch(error => handleError(error));
@@ -187,14 +194,15 @@ async function signUpRecruiter(firstName, lastName, password, companyName, email
   } finally {
     await client.close();
   }
-  return u;
+  return 1;
 }
 
 
 
 // TESTS - uncomment this to test the function
 // s = signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
-// signUpStudent("Arabelle", "Siahaan", "test@gmail.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+// signUpStudent("Arabelle", "Siahaan", "asdfghjkl", "test@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
 // signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
+signUpStudent("Test2", "Test",  "password1234", "test123456@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
