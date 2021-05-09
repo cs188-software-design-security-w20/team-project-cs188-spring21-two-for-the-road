@@ -83,29 +83,10 @@ async function signUpStudent(firstName, lastName, email, password, sid, year, gr
     const database = client.db("test");
     const col = database.collection("Student");
 
-    // check validity of values
-    if (typeof(firstName) != 'string' || typeof(lastName) != 'string' || typeof(major) != 'string' ||
-        typeof(minor) != 'string' || typeof(club) != 'string' || typeof(email) != 'string' || typeof(gradTerm) != 'string' ||
-        typeof(year) != 'number' || typeof(honorStudent) != 'boolean'){
-      throw new TypeError("One or more parameters have the wrong type");
-    }
-    if (year < 1 && year > 5){
-      throw new Error("year value can only be between 1 to 5");
-    }
-    if (!(/^\d+$/.test(sid)) || sid.length != 9){
-      throw new Error("sid should contain 9 digits");
-    }
-    if (!validateEmail(email) || !email.includes("ucla.edu")){
-      throw new Error("Email contains invalid characters or is not UCLA email");
-    }
-    var salt = bcrypt.genSaltSync(10);
-    var hashed_password = bcrypt.hashSync(password, salt);
-    var gradQ1 = gradTerm.charAt(0);
-    var gradQ2 = gradTerm.substring(0,1);
-    if (!(gradQ2.includes("Sp") || gradQ1.includes("F") || gradQ1.includes("W") ||
-    gradQ1.includes("S")) || !(/^\d+$/.test(gradTerm.slice(-2)))){
-      throw new Error("gradTerm has invalid format")
-    }
+  
+
+var salt = bcrypt.genSaltSync(10);
+var hashed_password = bcrypt.hashSync(password, salt);
 
     // create doc to be inserted after checking for params
     var doc = {
@@ -208,18 +189,90 @@ async function signUpRecruiter(firstName, lastName, companyName, email, password
 // signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
 
 router.post('/', async (req,res,next) => {
+
+	let StudentORrecruiter = req.body.StudentORrecruiter
+
+     console.log(req.body.StudentORrecruiter)
+	if(StudentORrecruiter === 'student'){
+	let email = req.body.email
+	let password = req.body.password
+	let firstName = req.body.firstName
+	let lastName = req.body.lastName
+	let sid = req.body.sid
+	let YearLevel = req.body.YearLevel
+	let gradTerm = req.body.gradTerm
+	let major = req.body.major
+	let minor = req.body.minor
+	let club =  req.body.club
+	let resume = req.body.resume
+	let profileImage = req.body.profileImage
+	let honorStudent = req.body.honorStudent
 	
-    // await signUpStudent()
-    console.log(req.body);
-    console.log(req.query)
-    let type_of_user = req.body;
-    console.log(type_of_user);
-    await signUpStudent("Test2", "Test", "test2@ucla.edu", "password1234", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+	 // check validity of values
+	 if (typeof(firstName) != 'string' || typeof(lastName) != 'string' || typeof(major) != 'string' ||
+	 typeof(minor) != 'string' || typeof(club) != 'string' || typeof(email) != 'string' || typeof(gradTerm) != 'string' ||
+	 typeof(YearLevel) != 'string' || honorStudent != 'string'){
+   		res.status(400).json({msg: "One or more parameters have the wrong type"	})
+		   return
+  }
+  if (YearLevel < 1 && year > 5){
+	res.status(400).json({msg: "year value can only be between 1 to 5"	})
+	return
+  }
+  if (!(/^\d+$/.test(sid)) || sid.length != 9){
+	res.status(400).json({msg: "sid should contain 9 digits"	})
+	return
+  }
+  if (!validateEmail(email) || !email.includes("ucla.edu")){
+	res.status(400).json({msg: "Email contains invalid characters or is not UCLA email"	})
+	return
+  }
+  
+  var gradQ1 = gradTerm.charAt(0);
+  var gradQ2 = gradTerm.substring(0,1);
+  var reg = /^[a-zA-Z]{1,6}[0-9]{2}[:.,-]?$/;
+  if (!reg.test(gradTerm)){
+	res.status(400).json({msg: "gradTerm has invalid format"	})
+	return
+  }
+	await signUpStudent(firstName, lastName, email, password, sid, YearLevel, gradTerm, major, minor, club, honorStudent, resume, profileImage);
     res.status(200).json(
         {
-            "message" : "Using a GET in /signup"
+            "message" : "Using a POST in /signup for student"
         }
     );
+
+	}
+	if(StudentORrecruiter == 'recruter'){
+	let email = req.body.email
+	let password = req.body.password
+	let firstName = req.body.firstName
+	let lastName = req.body.lastName
+	let companyName = req.body.companyName
+	let profileImage = req.body.profileImage
+
+		await signUpRecruiter(firstName, lastName, companyName, email, password, profileImage)
+		res.status(200).json(
+			{
+				"message" : "Using a POST in /signup for recruiter"
+			}
+		);
+
+
+	}
+	else {
+console.log("no data submitted")
+	}
+
+	
+
+	
+    // await signUpStudent()
+    // console.log(req.body);
+    // console.log(req.query)
+    // let type_of_user = req.body;
+    // console.log(type_of_user);
+    
 });
 
 module.exports = router;

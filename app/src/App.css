@@ -147,3 +147,7 @@ position: fixed;
 	width: 100%;
 
   }
+  dropdown-toggle::after {
+	margin-left: 4.255em !important;
+	margin-bottom: 7px;
+  }

@@ -37,6 +37,7 @@ mongoose.createConnection(uri, {useNewUrlParser: true, useUnifiedTopology: true}
   
   console.log("Succesfully connected to DB...")
 
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(jsonParser);
 app.use('/signup', signUpRoute);
