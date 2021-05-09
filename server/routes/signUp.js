@@ -172,6 +172,9 @@ async function signUpRecruiter(firstName, lastName, companyName, email, password
     console.log(
       `${result.insertedCount} documents were inserted with the _id: ${result.insertedId}`,
     );
+
+	//working on jWT and coockie creation in the signup
+	
   } finally {
     // await client.close();
     ;
