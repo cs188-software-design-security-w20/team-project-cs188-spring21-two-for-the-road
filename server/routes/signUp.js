@@ -276,6 +276,7 @@ router.post('/', async (req, res, next) => {
 				let token = jwt.sign({ exp: expiration, usr: email }, config.JWT_SECRET);
 				res.cookie('jwt', token);
 				res.status(200).json(returnedUser);
+				return
 
 			}
 		})
@@ -283,7 +284,7 @@ router.post('/', async (req, res, next) => {
 
 
 	}
-	if (StudentORrecruiter === 'recruter') {
+	else if (StudentORrecruiter === 'recruter') {
 		let email = req.body.email
 		let password = req.body.password
 		let firstName = req.body.firstName
@@ -335,6 +336,7 @@ router.post('/', async (req, res, next) => {
 		let token = jwt.sign({ exp: expiration, usr: email }, config.JWT_SECRET);
 		res.cookie('jwt', token);
 		res.status(200).json(returnedUser);
+		return
 		}})
 
 
