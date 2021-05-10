@@ -2,7 +2,7 @@
   This file connects to MongoDB database in the cloud server
 */
 const config = require('./config/config.js')
-
+var cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
  const { app: {port, node_env}, database: { username, password, db } } = config;
  const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
@@ -40,6 +40,7 @@ mongoose.createConnection(uri, {useNewUrlParser: true, useUnifiedTopology: true}
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(jsonParser);
+app.use(cookieParser())
 app.use('/signup', signUpRoute);
 app.use('/login', loginRoute);
 
