@@ -1,7 +1,6 @@
 /*
   This file contains function that can be called when a User logs into their account:
-    - logInStu
-    - signUpRecruiter
+    - loginUser
 */
 
 const config = require('./config/config.js')
