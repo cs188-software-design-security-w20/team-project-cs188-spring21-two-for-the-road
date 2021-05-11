@@ -1,7 +1,23 @@
 import React from 'react'
 import Header from "../components/Header"
+import {connect} from 'react-redux'
+import {register} from '../actions/authAction'
+import {clearErrors} from '../actions/errorActions'
+import PropTypes from 'prop-types'
+import { Route , withRouter} from 'react-router-dom';
+
+
+
 class listOfJobs extends React.Component {
    
+
+	static propTypes = {
+        isAuthenticated : PropTypes.bool,
+        error : PropTypes.object.isRequired,
+        register: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
+    }
+
    
   async getData() {
     //do mongowork here
@@ -44,6 +60,8 @@ renderTableData() {
   }
 
   render() {
+	if(!this.props.isAuthenticated)
+	{this.props.history.push('/')}
      return (
         <div>
       <Header />
@@ -59,4 +77,11 @@ renderTableData() {
   }
 }
 
-export default listOfJobs;
+const mapStateToProps = state =>({
+    isAuthenticated : state.auth.isAuthenticated,
+    error: state.error
+})
+export default connect (
+    mapStateToProps,
+    {register, clearErrors}
+)(withRouter(listOfJobs));
