@@ -70,6 +70,7 @@ import { Route , withRouter} from 'react-router-dom';
         const { values } = this.props
         //Create User Object
 		const formData = new FormData()
+		
 		formData.append("firstName", values.firstName)
 		formData.append("lastName", values.lastName)
 		formData.append("email", values.email)
@@ -83,6 +84,11 @@ import { Route , withRouter} from 'react-router-dom';
 		formData.append("password" , values.password)
         formData.append('profileImage', values.profileImage)
     
+		
+		
+    
+		
+		
 		
         
 		
@@ -256,7 +262,7 @@ import { Route , withRouter} from 'react-router-dom';
 		const { values, handleChange, history} = this.props
 		if(this.props.isAuthenticated)
 		{this.props.history.push('/job-apps')}
-		
+
 		return (
 		<div >
 		{this.state.msg ? (<Alert color="danger">{this.state.msg}</Alert>) : null}

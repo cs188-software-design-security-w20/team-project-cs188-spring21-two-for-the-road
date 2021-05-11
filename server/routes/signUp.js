@@ -211,7 +211,7 @@ router.post('/', upload.single('profileImage'), async (req, res, next) => {
 		let minor = req.body.minor
 		let club = req.body.club
 		let resume = req.body.resume
-		let profileImage = req.body.profileImage
+		let profileImage = req.file
 		let honorStudent = req.body.honorStudent
 
 		// check validity of values
@@ -305,7 +305,7 @@ router.post('/', upload.single('profileImage'), async (req, res, next) => {
 
 
 	}
-	else if (StudentORrecruiter === 'recruter') {
+	else if (StudentORrecruiter === 'recruiter') {
 		let email = req.body.email
 		let password = req.body.password
 		let firstName = req.body.firstName
@@ -321,12 +321,12 @@ router.post('/', upload.single('profileImage'), async (req, res, next) => {
 		// }
 
 		if (!validateEmail(email)) {
-			res.status(400).json({ msg: "Email contains invalid characters" })
+			res.status(400).send("Email contains invalid characters" )
 			return
 		}
 
 		if (!email || !password || !firstName || !lastName){
-			res.status(400).json({ msg: "Inputs are required!" })
+			res.status(400).send("Inputs are required!" )
 			return
 		}
 		
@@ -339,7 +339,7 @@ router.post('/', upload.single('profileImage'), async (req, res, next) => {
 		const col = database.collection("Recruiter");
 		const finduser = col.findOne({ "email": email }, async function (err, result) {
 			if (result) {
-				res.status(400).json({ msg: "This email is already used!" })
+				res.status(400).send("This email is already used!" )
 				return
 			}
 			else {
@@ -365,7 +365,7 @@ router.post('/', upload.single('profileImage'), async (req, res, next) => {
 
 	}
 	else {
-		res.status(400).json({ msg: "User status is undefined!" })
+		res.status(400).send("User status is undefined!" )
 				return
 	}
 
