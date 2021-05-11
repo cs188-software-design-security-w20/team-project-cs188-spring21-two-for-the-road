@@ -33,13 +33,12 @@ import {
 
 
 
-console.log(process.env.REACT_APP_GOOGLE_CAPTCH_API)
 
 class Login extends Component {
-	static API_KEY = process.env.REACT_APP_GOOGLE_CAPTCH_API
 	constructor(props) {
 		super(props);
 		this.state = {
+			msg:null,
 			email: '',
 			password: '',
 			validate: {
@@ -69,7 +68,7 @@ class Login extends Component {
 		const { error, history, location, isAthenticated } = this.props;
 		  
 		  if(error !== prevProps.error){
-			  if(error.id=== 'REGISTER_FAIL'){
+			  if(error.id=== 'LOGIN_FAIL'){
 				  this.setState({msg: error.msg})
   
 			  }
@@ -178,9 +177,9 @@ class Login extends Component {
 		return (
 
 			<Fragment>
-				{this.state.msg ? (<Alert color="danger">{this.state.msg}</Alert>) : null}
+				
 				<div className='signin-form'>
-					
+				{this.state.msg ? (<Alert color="danger">{this.state.msg}</Alert>) : null}
 					<Form onSubmit={this.onSubmit}>
 
 						<Container fluid >
