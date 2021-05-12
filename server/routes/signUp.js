@@ -2,7 +2,8 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router()
-
+var multer  = require('multer')
+var upload = multer({ dest: '../app/public/images' })
 const jwt = require('jsonwebtoken')
 /*
   This file contains function that can be called when a User signs up for an account:
@@ -192,11 +193,12 @@ async function signUpRecruiter(firstName, lastName, companyName, email, password
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
 // signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
 
-router.post('/', async (req, res, next) => {
+router.post('/', upload.single('profileImage'), async (req, res, next) => {
 
 	let StudentORrecruiter = req.body.StudentORrecruiter
 
-	console.log(req.body.StudentORrecruiter)
+	console.log(req.file)
+	console.log(req.body)
 	if (StudentORrecruiter === 'student') {
 		let email = req.body.email
 		let password = req.body.password
@@ -209,27 +211,27 @@ router.post('/', async (req, res, next) => {
 		let minor = req.body.minor
 		let club = req.body.club
 		let resume = req.body.resume
-		let profileImage = req.body.profileImage
+		let profileImage = req.file
 		let honorStudent = req.body.honorStudent
 
 		// check validity of values
 		var reg = /^[a-zA-Z\s]*$/;
 		if (!reg.test(firstName) || !reg.test(lastName) || !reg.test(major) || !reg.test(minor) ||
 			!reg.test(YearLevel)) {
-			res.status(400).json({ msg: "One of the values is not valid input!" })
+			res.status(400).send("One of the values is not valid input!" )
 			return
 		}
 
 		if (YearLevel < 1 && year > 5) {
-			res.status(400).json({ msg: "year value can only be between 1 to 5" })
+			res.status(400).send("year value can only be between 1 to 5" )
 			return
 		}
 		if (!(/^\d+$/.test(sid)) || sid.length != 9) {
-			res.status(400).json({ msg: "sid should contain 9 digits" })
+			res.status(400).send("sid should contain 9 digits" )
 			return
 		}
 		if (!validateEmail(email) || !email.includes("ucla.edu")) {
-			res.status(400).json({ msg: "Email contains invalid characters or is not UCLA email" })
+			res.status(400).send("Email contains invalid characters or is not UCLA email")
 			return
 		}
 
@@ -237,7 +239,7 @@ router.post('/', async (req, res, next) => {
 		var gradQ2 = gradTerm.substring(0, 1);
 		var reg = /^[a-zA-Z]{1,6}[0-9]{2}[:.,-]?$/;
 		if (!reg.test(gradTerm)) {
-			res.status(400).json({ msg: "gradTerm has invalid format" })
+			res.status(400).send("gradTerm has invalid format")
 			return
 		}
 
@@ -249,13 +251,32 @@ router.post('/', async (req, res, next) => {
 		const col = database.collection("Student");
 		const finduser = col.findOne({ "email": email }, async function (err, result) {
 			if (result) {
-				res.status(400).json({ msg: "This email is already used!" })
+				//console.log("email alfrrady used!")
+				res.status(401).send("This email is already used!" )
 				return
 			}
 			else {
+				var sentUser = {
+					
+					"firstName": firstName,
+					"lastName":  lastName,
+					"email":  email,
+					"sid":  sid,
+					"YearLevel":  YearLevel,
+					"gradTerm" :  gradTerm,
+					"major" :  major,
+					"minor" :  minor,
+					"profileImage" :  profileImage,
+					"resume" :  resume,
+					"club" :  club,
+					"gradTerm" :  gradTerm,
+					"honorStudent" :  honorStudent,
+					"StudentORrecruiter" : "student"
+				}
+				console.log(sentUser)
 				var doc = await signUpStudent(firstName, lastName, email, password, sid, YearLevel, gradTerm, major, minor, club, honorStudent, resume, profileImage);
 
-				var returnedUser = {
+				var payload = {
 					"id" : doc.ops[0]._id,
 					"firstName": doc.ops[0].firstName,
 					"lastName": doc.ops[0].lastName,
@@ -275,7 +296,7 @@ router.post('/', async (req, res, next) => {
 				let expiration = Math.floor(Date.now() / 1000) + (2 * (60 * 60));
 				let token = jwt.sign({ exp: expiration, usr: email }, config.JWT_SECRET);
 				res.cookie('jwt', token);
-				res.status(200).json(returnedUser);
+				res.status(200).json(payload);
 				return
 
 			}
@@ -284,7 +305,7 @@ router.post('/', async (req, res, next) => {
 
 
 	}
-	else if (StudentORrecruiter === 'recruter') {
+	else if (StudentORrecruiter === 'recruiter') {
 		let email = req.body.email
 		let password = req.body.password
 		let firstName = req.body.firstName
@@ -300,12 +321,12 @@ router.post('/', async (req, res, next) => {
 		// }
 
 		if (!validateEmail(email)) {
-			res.status(400).json({ msg: "Email contains invalid characters" })
+			res.status(400).send("Email contains invalid characters" )
 			return
 		}
 
 		if (!email || !password || !firstName || !lastName){
-			res.status(400).json({ msg: "Inputs are required!" })
+			res.status(400).send("Inputs are required!" )
 			return
 		}
 		
@@ -318,12 +339,12 @@ router.post('/', async (req, res, next) => {
 		const col = database.collection("Recruiter");
 		const finduser = col.findOne({ "email": email }, async function (err, result) {
 			if (result) {
-				res.status(400).json({ msg: "This email is already used!" })
+				res.status(400).send("This email is already used!" )
 				return
 			}
 			else {
 		const doc = await signUpRecruiter(firstName, lastName, companyName, email, password, profileImage)
-		var returnedUser = {
+		var payload= {
 			"id" : doc.ops[0]._id,
 			"firstName": doc.ops[0].firstName,
 			"lastName": doc.ops[0].lastName,
@@ -335,7 +356,7 @@ router.post('/', async (req, res, next) => {
 		let expiration = Math.floor(Date.now() / 1000) + (2 * (60 * 60));
 		let token = jwt.sign({ exp: expiration, usr: email }, config.JWT_SECRET);
 		res.cookie('jwt', token);
-		res.status(200).json(returnedUser);
+		res.status(200).json(payload);
 		return
 		}})
 
@@ -344,7 +365,7 @@ router.post('/', async (req, res, next) => {
 
 	}
 	else {
-		res.status(400).json({ msg: "User status is undefined!" })
+		res.status(400).send("User status is undefined!" )
 				return
 	}
 

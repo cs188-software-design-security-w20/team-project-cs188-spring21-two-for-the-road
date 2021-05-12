@@ -184,20 +184,20 @@ router.post('/', async (req, res, next) =>{
 router.get('/load',  async (req, res)=>{
 
 
-	if(!req.cookies){ return res.status(400).json({ msg: "User is not authenticated" }); }
+	if(!req.cookies){ return res.status(400).send( "No cookie" ); }
 
 	let secret = config.JWT_SECRET
 	//console.log(req.cookies)
 	if (req.cookies.jwt == null) {
-		res.status(401).json({ msg: "User is not authenticated" });
+		res.status(401).send("Your cookie is null " );
 		return
 
 	}
 	jwt.verify(req.cookies.jwt, secret, async function (err, decoded) {
 		if (err) {
 			//	console.log(err)
-			return res.status(400).json({ msg: "User is not authenticated" });
-			return
+			return res.status(400).send("Invalid cookie" );
+			//return
 			/*
 			  err = {
 				name: 'TokenExpiredError',
@@ -239,7 +239,7 @@ router.get('/load',  async (req, res)=>{
 					let expiration = Math.floor(Date.now() / 1000) + (2 * (60 * 60));
 					let token = jwt.sign({ exp: expiration, usr: email }, config.JWT_SECRET);
 					res.cookie('jwt', token);
-					res.status(200).json(returnedUser);
+					res.status(200).json(payload);
 					return
 				
 				
@@ -249,7 +249,7 @@ router.get('/load',  async (req, res)=>{
 			}
 			else {
 				//console.log(resul)
-					var returnedUser = {
+					var payload = {
 						"id" : resul._id,
 						"firstName": resul.firstName,
 						"lastName": resul.lastName,
@@ -269,7 +269,7 @@ router.get('/load',  async (req, res)=>{
 					let expiration = Math.floor(Date.now() / 1000) + (2 * (60 * 60));
 					let token = jwt.sign({ exp: expiration, usr: email }, config.JWT_SECRET);
 					res.cookie('jwt', token);
-					res.status(200).json(returnedUser);
+					res.status(200).json(payload);
 					return
 
 				
@@ -280,7 +280,10 @@ router.get('/load',  async (req, res)=>{
 	});
 
 
-
+router.get('/logout', (req, res) => {
+console.log('You reach this route')
+res.redirect('/')
+})
 
 
 

@@ -2,6 +2,12 @@ import { Redirect, useHistory } from "react-router-dom"
 import React, { Component, Fragment } from 'react';
 import Recaptcha from 'react-recaptcha';
 import validator from 'validator'
+import {login} from '../actions/authAction'
+import {clearErrors} from '../actions/errorActions'
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
+import { Route , withRouter} from 'react-router-dom';
+
 
 import { faUserAlt, faSignInAlt, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,13 +33,12 @@ import {
 
 
 
-console.log(process.env.REACT_APP_GOOGLE_CAPTCH_API)
 
 class Login extends Component {
-	static API_KEY = process.env.REACT_APP_GOOGLE_CAPTCH_API
 	constructor(props) {
 		super(props);
 		this.state = {
+			msg:null,
 			email: '',
 			password: '',
 			validate: {
@@ -49,6 +54,38 @@ class Login extends Component {
 	callback =  () => {
 		console.log('Done!!!!');
 	  };
+
+
+	  static propTypes = {
+        isAuthenticated : PropTypes.bool,
+        error : PropTypes.object.isRequired,
+        register: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
+    }
+
+
+	componentDidUpdate(prevProps){
+		const { error, history, location, isAthenticated } = this.props;
+		  
+		  if(error !== prevProps.error){
+			  if(error.id=== 'LOGIN_FAIL'){
+				  this.setState({msg: error.msg})
+  
+			  }
+			  else {
+				  this.setState({ msg: null})
+			  }
+		  }
+		//   if (!isAthenticated) {
+        //     history.push("/job-apps")
+        // }
+
+		
+  
+	  }
+
+
+
 
 
 
@@ -78,7 +115,7 @@ class Login extends Component {
 	}
 
 	onSubmit = e =>{
-        //this.props.clearErrors();
+        this.props.clearErrors();
         e.preventDefault();
 		if(this.state.validate.emailState === "has-danger" || this.state.validate.emailState === "danger"){
 			alert("Something is wrong with your inputs: Your email should be a valid UCLA Email and not empty!")
@@ -95,10 +132,15 @@ class Login extends Component {
         const newUser =
         {
            
-            email,
-            password,
+            email: this.state.email,
+            password: this.state.password
           
         }
+		console.log(newUser)
+        this.props.login(newUser);
+        console.log(`The message is : ${this.state.msg}`);
+        e.target.className += " was-validated";
+
 	   }
 	    
 	   else {
@@ -131,11 +173,13 @@ class Login extends Component {
 		
 	}
 	render() {
+		
 		return (
 
 			<Fragment>
-				{this.state.msg ? (<Alert color="danger">{this.state.msg}</Alert>) : null}
+				
 				<div className='signin-form'>
+				{this.state.msg ? (<Alert color="danger">{this.state.msg}</Alert>) : null}
 					<Form onSubmit={this.onSubmit}>
 
 						<Container fluid >
@@ -235,4 +279,11 @@ class Login extends Component {
 const style = {
 	margin: 15,
 };
-export default Login;
+const mapStateToProps = state =>({
+    isAuthenticated : state.auth.isAuthenticated,
+    error: state.error
+})
+export default connect (
+    mapStateToProps,
+    {login, clearErrors}
+)(withRouter(Login));

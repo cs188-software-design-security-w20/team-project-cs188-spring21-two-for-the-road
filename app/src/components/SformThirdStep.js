@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
-import { Form, FormGroup, Label, Input, FormFeedback, FormText , Button, Card} from 'reactstrap';
+import { Form, FormGroup, Label, Input, FormFeedback, FormText, Button, Card, Alert } from 'reactstrap';
 import "../App.css";
+import {register} from '../actions/authAction'
+import {clearErrors} from '../actions/errorActions'
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
+import { Route , withRouter} from 'react-router-dom';
 
-export default class SformThirdStep extends Component {
+
+
+ class SformThirdStep extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+		  msg:null,
 		  selectedFile: null, // to store selected file
 		  handleResponse: null, // handle the API response
 		  imageUrl: null, // to store uploaded image path
@@ -21,6 +29,108 @@ export default class SformThirdStep extends Component {
 		};
 		this.reader = new FileReader();
 	  }
+
+
+
+
+
+
+	  static propTypes = {
+        isAuthenticated : PropTypes.bool,
+        error : PropTypes.object.isRequired,
+        register: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
+    }
+
+	
+  
+	componentDidUpdate(prevProps){
+		const { error, history, location, isAthenticated } = this.props;
+		  
+		  if(error !== prevProps.error){
+			  if(error.id=== 'REGISTER_FAIL'){
+				  this.setState({msg: error.msg})
+  
+			  }
+			  else {
+				  this.setState({ msg: null})
+			  }
+		  }
+		//   if (!isAthenticated) {
+        //     history.push("/job-apps")
+        // }
+
+		
+  
+	  }
+
+	  onSubmit = e =>{
+        this.props.clearErrors();
+        e.preventDefault();
+        const { values } = this.props
+        //Create User Object
+		const formData = new FormData()
+		
+		formData.append("firstName", values.firstName)
+		formData.append("lastName", values.lastName)
+		formData.append("email", values.email)
+		formData.append("sid", values.sid)
+        formData.append("YearLevel", values.YearLevel)
+        formData.append("gradTerm" , values.gradTerm)
+        formData.append("major" , values.major)
+        formData.append("minor" , values.minor)
+        formData.append("honorStudent" , values.honorStudent)
+        formData.append("StudentORrecruiter" , values.StudentORrecruiter)
+		formData.append("password" , values.password)
+        formData.append('profileImage', values.profileImage)
+    
+		
+		
+    
+		
+		
+		
+        
+		
+		const newUser =
+        {
+					"firstName": values.firstName,
+					"lastName": values.lastName,
+					"email": values.email,
+					"sid": values.sid,
+					"YearLevel": values.YearLevel,
+					"gradTerm" : values.gradTerm,
+					"major" : values.major,
+					"minor" : values.minor,
+					"profileImage" : formData,
+					"resume" : values.resume,
+					"club" : values.club,
+					"password" : values.password,
+					"honorStudent" : values.honorStudent,
+					"StudentORrecruiter" : values.StudentORrecruiter
+          
+        }
+        //Attempt to register
+		console.log(formData)
+        this.props.register(formData);
+        console.log(`The message is : ${this.state.msg}`);
+        e.target.className += " was-validated";
+		
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	continue = e => {
 		e.preventDefault()
@@ -146,19 +256,18 @@ export default class SformThirdStep extends Component {
 	}
 
 
-
-
-
-
-
-
-
 	render() {
 		const { handleResponse, imageUrl, invalidImage } = this.state;
-		const { values, handleChange} = this.props
+
+		const { values, handleChange, history} = this.props
+		if(this.props.isAuthenticated)
+		{this.props.history.push('/job-apps')}
+
 		return (
 		<div >
-			<form >
+		{this.state.msg ? (<Alert color="danger">{this.state.msg}</Alert>) : null}
+
+			<form onSubmit={this.onSubmit} enctype="multipart/form-data">
 
 {/*  picture profile*/}
 			<FormGroup>
@@ -287,9 +396,19 @@ export default class SformThirdStep extends Component {
 
 
 	<Button  onClick={this.back} > Previeus step</Button>
-	  <Button className="mx-2" onClick={this.continue} >Next Step</Button>
+	  <Button className="mx-2" 
+	//   onClick={this.continue} 
+	  >Sign up</Button>
 			</form>
 			</div>
 		)
 	}
 }
+const mapStateToProps = state =>({
+    isAuthenticated : state.auth.isAuthenticated,
+    error: state.error
+})
+export default connect (
+    mapStateToProps,
+    {register, clearErrors}
+)(withRouter(SformThirdStep));

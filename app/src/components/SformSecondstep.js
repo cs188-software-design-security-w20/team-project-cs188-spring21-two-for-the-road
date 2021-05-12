@@ -104,7 +104,7 @@ export default class StudentformSecontStep extends Component {
 		<div >
 			<h3 className="my-2">Make the most of your journey in UCLA</h3>
 			<hr></hr>
-			<form className="my-2">
+			<form className="my-2" enctype="multipart/form-data">
 			<FormGroup>
         <Label for="Password">Password</Label>
         <Input type="password" name="password" id="Password" placeholder="password" 
