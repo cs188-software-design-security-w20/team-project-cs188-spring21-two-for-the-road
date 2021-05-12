@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 import { Route , withRouter} from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import users from '../data/users'
-
+import { FaUserCircle, FaRegSave} from 'react-icons/fa';
 import {
 	Button,
 	Form,
@@ -35,14 +35,14 @@ const Headerhome = ({history}) =>{
             <div className = "header" >
                 <div className="logo">AppName
 	  				</div>
-					  <div className="dropD2">saved Jobs</div>
+					  <div className="dropD2"><FaRegSave className="mx-1"/>Saved Jobs</div>
 
 					  <div className="dropD">
       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
       <DropdownToggle className="joblink" nav caret>
 	 
 	  {/* <img src={imageUrl} className ="imageRound" /> */}
-      { user ?  `${user.firstName}` : 'Sign In / Account' }
+      { user ?  <div><FaUserCircle className="mx-1" />Hi {user.firstName}</div> : 'Sign In / Account' }
       </DropdownToggle>
       <DropdownMenu color="dark">
 
