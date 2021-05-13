@@ -1,41 +1,96 @@
-import React from 'react'
-import Header from "../components/Header"
-import {connect} from 'react-redux'
-import {register} from '../actions/authAction'
-import {clearErrors} from '../actions/errorActions'
-import PropTypes from 'prop-types'
-import { Route , withRouter} from 'react-router-dom';
-
-
+const React = require('react')
+const Header = require("../components/Header")
+const config = require('../../server/config/config.js')
+const { app: {port, node_env}, database: { username, password, db } } = config;
+const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
+const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+const express = require('express')
+const app = express()
+require('dotenv').config({path: './config/config.env'})
 
 class listOfJobs extends React.Component {
-   
 
-	static propTypes = {
-        isAuthenticated : PropTypes.bool,
-        error : PropTypes.object.isRequired,
-        register: PropTypes.func.isRequired,
-        clearErrors: PropTypes.func.isRequired
-    }
+  async addJob(title, description, ownerEmail, companyName){
+    try {
+  		// connect to database
+  		await client.connect()
+  			.catch(error => handleError(error));
+  		console.log("Succesfully connected to DB...")
 
-   
-  async getData() {
-    //do mongowork here
-      let result = {
-        students: [
-           { id: 1, name: 'Wasif', age: 21, email: 'wasif@email.com' },
-           { id: 2, name: 'Ali', age: 19, email: 'ali@email.com' },
-           { id: 3, name: 'Saad', age: 16, email: 'saad@email.com' },
-           { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }
-        ]
-     }
-      this.setState(result);
+  		const database = client.db("test");
+  		const col = database.collection("Jobs");
+
+      const max_id = col.find().sort({age:-1}).limit(1);
+      var jobID = 0;
+      if (max_id == {}){
+        jobId = 1;
+      } else{
+        jobID = max_id.jobID + 1;
+      }
+
+  		// create doc to be inserted
+  		var doc = {
+        jobID:jobID,
+  			title:title,
+        description:description,
+        ownerEmail:ownerEmail,
+        companyName:companyName,
+        dateCreated: new Date()
+  		};
+
+  		const result = await col.insertOne(doc)
+  			.catch(error => handleError(error));
+  		console.log(
+  			`${result.insertedCount} documents were inserted with the _id: ${result.insertedId}`,
+  		);
+  		return result
+  	} finally {
+  		// await client.close();
+  		;
+  	}
+  	return 1;
   }
-  
+  }
+
+  async function getData(jobID) {
+      try {
+        // connect to database
+        await client.connect()
+          .catch(error => handleError(error));
+        console.log("Succesfully connected to DB...")
+
+        const database = client.db("test");
+        const col = database.collection("Jobs");
+
+        // create doc to be inserted after checking for params
+        var query = {
+          jobID:jobID
+        };
+
+        const result = await col.findOne(query)
+          .catch(error => handleError(error));
+        console.log(result);
+        return result;
+
+        } finally {
+          await client.close();
+        }
+
+     //  let result = {
+     //    students: [
+     //       { id: 1, name: 'Wasif', age: 21, email: 'wasif@email.com' },
+     //       { id: 2, name: 'Ali', age: 19, email: 'ali@email.com' },
+     //       { id: 3, name: 'Saad', age: 16, email: 'saad@email.com' },
+     //       { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }
+     //    ]
+     // }
+     //  this.setState(result);
+  }
+
   async componentWillMount() {
      await this.getData();
   }
-  
+
 
    renderTableHeader() {
    // await this.componentDidMount();
@@ -60,8 +115,6 @@ renderTableData() {
   }
 
   render() {
-	if(!this.props.isAuthenticated)
-	{this.props.history.push('/')}
      return (
         <div>
       <Header />
@@ -77,11 +130,11 @@ renderTableData() {
   }
 }
 
-const mapStateToProps = state =>({
-    isAuthenticated : state.auth.isAuthenticated,
-    error: state.error
-})
-export default connect (
-    mapStateToProps,
-    {register, clearErrors}
-)(withRouter(listOfJobs));
+export default listOfJobs;
+
+// TESTS - uncomment this to test the function
+addJob("SWE", "SWE Job at UCLA", "own1@abc.com", "UCLA");
+// signUpStudent("Arabelle", "Siahaan", "test@gmail.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+// signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
+// signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
+// signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
