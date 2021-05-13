@@ -12,14 +12,19 @@ const app = express()
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
 require('dotenv').config({path: './config/config.env'})
-
+const connectMongo = require('./config/DbConnect')
 // const cors = require('cors')
 
 
 const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 const signUpRoute = require ('./routes/signUp.js');
 const loginRoute = require ('./routes/login.js');
+<<<<<<< HEAD
 // const profileRoute = require ('./routes/profile.js');
+=======
+const jobsRoute = require ('./routes/jobs.js');
+
+>>>>>>> a46f6c473b08a0025518afd87335967499a38e01
 
 
 const my_port = process.env.PORT || config.app.port || 5000;
@@ -33,6 +38,7 @@ let handleError = (error) => {
   console.log(error);
 }
 
+connectMongo();
 mongoose.createConnection(uri, {useNewUrlParser: true, useUnifiedTopology: true}).
   catch(error => handleError(error));
   
@@ -50,7 +56,11 @@ app.use(cookieParser())
 // 	});
 app.use('/signup', signUpRoute);
 app.use('/login', loginRoute);
+<<<<<<< HEAD
 // app.use('/profile', profileRoute);
+=======
+app.use('/jobs', jobsRoute);
+>>>>>>> a46f6c473b08a0025518afd87335967499a38e01
 
   // .listen(process.env.PORT || 5000)
 const server = app.listen(my_port, () => {
