@@ -39,43 +39,46 @@ const jwt = require('jsonwebtoken')
     -1 - If there is no (username, password) combination in the DB, return -1
     JSON - If the entered password is correct, return JSON file of User's info
 */
-async function loginUser(email, password){
-  try {
-    // connect to database
-    await client.connect()
-      .catch(error => handleError(error));
-    console.log("Succesfully connected to DB...")
 
-    const database = client.db("test");
+// redundant code = This code just broke the server.
 
-    // check if user is student or recruiter
-    if (email.includes("ucla.edu")){
-      col = database.collection("Student");
-    }
-    else{
-      col = database.collection("Recruiter");
-    }
+// async function loginUser(email, password){
+//   try {
+//     // connect to database
+//     await client.connect()
+//       .catch(error => handleError(error));
+//     console.log("Succesfully connected to DB...")
 
-    // create doc to be inserted after checking for params
-    var query = {
-      email:email,
-    };
+//     const database = client.db("test");
 
-    const result = await col.findOne(query)
-      .catch(error => handleError(error));
-    console.log(result);
+//     // check if user is student or recruiter
+//     if (email.includes("ucla.edu")){
+//       col = database.collection("Student");
+//     }
+//     else{
+//       col = database.collection("Recruiter");
+//     }
 
-    if (bcrypt.compareSync(password, result.password)){
-      return result;
-    }
-    else{
-      throw new Error("Invalid email and password combination")
-      return -1;
-    }
-    } finally {
-      await client.close();
-    }
-}
+//     // create doc to be inserted after checking for params
+//     var query = {
+//       email:email,
+//     };
+
+//     const result = await col.findOne(query)
+//       .catch(error => handleError(error));
+//     console.log(result);
+
+//     if (bcrypt.compareSync(password, result.password)){
+//       return result;
+//     }
+//     else{
+//       throw new Error("Invalid email and password combination")
+//       return -1;
+//     }
+//     } finally {
+//       await client.close();
+//     }
+// }
 
 // TESTS - uncomment this to test the function
 // signUpStudent("Test2", "Test", "test2@ucla.edu", "123456789", 4, "W21", "CS", "NA", "test", true, "NA", "NA");
@@ -84,16 +87,16 @@ async function loginUser(email, password){
 // signUpStudent("Arabelle", "Siahaan", "test@ucla.edu", "12356789", 4, "L21", "CS", "NA", "test", true, "NA", "NA");
 // signUpRecruiter("Recruiter", "Test", "Company", "abc@company.com", "NA");
 
-router.post('/', async (req,res,next) => {
-    // await signUpStudent()
-    console.log(req.body);
-    await loginUser("test2@ucla.edu", "123456789");
-    res.status(200).json(
-        {
-            "message" : "Using a POST in /login"
-        }
-    );
-});
+// router.post('/', async (req,res,next) => {
+//     // await signUpStudent()
+//     console.log(req.body);
+//     await loginUser("test2@ucla.edu", "123456789");
+//     res.status(200).json(
+//         {
+//             "message" : "Using a POST in /login"
+//         }
+//     );
+// });
 
 
 let handleError = (error) => {

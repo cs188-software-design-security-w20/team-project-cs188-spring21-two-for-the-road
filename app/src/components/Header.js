@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Button } from 'reactstrap';
+import { Button, Nav, NavItem, NavLink  } from 'reactstrap';
 import { Route , withRouter} from 'react-router-dom';
 import {useDispatch, useSelector}  from 'react-redux'
 import {logout} from '../actions/authAction'
@@ -39,6 +39,20 @@ const Header = ({history}) =>{
 		<div className = "header" >
 			
                 <div className="logo">AppName</div>
+				<Nav>
+        <NavItem>
+          <NavLink href="#">Link</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="#">Link</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="#">Another Link</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink disabled href="#">Disabled Link</NavLink>
+        </NavItem>
+      </Nav>
 	<div className="auth-menu"> <Button to="/" onClick= {logoutHandler}>Logout</Button></div>
 	</div>)
         return (
