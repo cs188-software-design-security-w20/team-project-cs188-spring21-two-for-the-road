@@ -103,7 +103,7 @@ async function updateStudentEmail(new_email) {
 
 
 
-  router.post('/changeStudentEmail', (req, res, next) => {
+  router.post('/changeStudentEmail', async (req, res, next) => {
     await client.connect()
     .catch(error => handleError(error));
     console.log("Succesfully connected to DB...")
@@ -118,9 +118,10 @@ async function updateStudentEmail(new_email) {
             return
         }
 
-  });
+  })
+});
 
-  router.post('/changeRecruiterEmail', (req, res, next) => {
+  router.post('/changeRecruiterEmail', async (req, res, next) => {
     await client.connect()
     .catch(error => handleError(error));
     console.log("Succesfully connected to DB...")
@@ -135,7 +136,8 @@ async function updateStudentEmail(new_email) {
             return
         }
 
-  });
+  })
+});
 
   async function updateStudentPassword(new_password) {
 	try {
@@ -194,7 +196,7 @@ async function updateRecruiterPassword(new_password) {
 }
 
 
-  router.post('/changeRecruiterPassword', (req, res, next) => {
+  router.post('/changeRecruiterPassword', async (req, res, next) => {
     await client.connect()
     .catch(error => handleError(error));
     console.log("Succesfully connected to DB...")
@@ -208,9 +210,10 @@ async function updateRecruiterPassword(new_password) {
             res.status(200).send("Recruiter's new Password: " +  req.body.password);
             return;
         }
-  });
+  })
+});
 
-  router.post('/changeStudentPassword', (req, res, next) => {
+  router.post('/changeStudentPassword', async (req, res, next) => {
     await client.connect()
     .catch(error => handleError(error));
     console.log("Succesfully connected to DB...")
@@ -224,9 +227,10 @@ async function updateRecruiterPassword(new_password) {
             res.status(200).send("Recruiter's new Password: " +  req.body.password);
             return;
         }
-  });
+  })
+});
 
-  router.get('/showInfo',  async (req, res)=>{
+router.get('/showInfo',  async (req, res)=>{
 	//let's check if the user exist in our database: if it does return the user's data
 	await client.connect()
 			.catch(error => handleError(error));

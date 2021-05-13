@@ -3,7 +3,7 @@
     - loginUser
 */
 
-const config = require('./config/config.js')
+const config = require('../config/config.js')
 const bcrypt = require('bcryptjs');
 const { app: {port, node_env}, database: { username, password, db } } = config;
 const uri = `mongodb+srv://${username}:${password}@cs188.pjfhc.mongodb.net/${db}?retryWrites=true&w=majority`;
