@@ -293,3 +293,5 @@ router.get('/showInfo',  async (req, res)=>{
 		});
     
 	});
+
+    module.exports = router;

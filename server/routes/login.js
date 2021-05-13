@@ -12,6 +12,7 @@ const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUn
 
 const express = require('express')
 const app = express()
+const router = express.Router()
 require('dotenv').config({path: './config/config.env'})
 
 /*
@@ -62,6 +63,8 @@ async function loginUser(email, password){
       await client.close();
     }
 }
+
+module.exports = router;
 
 // TESTS - uncomment this to test the function
 // loginUser("test123456@ucla.edu", "password1234");
