@@ -91,3 +91,77 @@ async function getJob(jobID) {
       }
     return result;
 }
+
+
+router.get('/getJob/:jobID', async (req, res) => {
+  // connect to database
+  var jobID = req.params.jobID;
+  await client.connect()
+    .catch(error => handleError(error));
+  console.log("Succesfully connected to DB...")
+
+  const database = client.db("test");
+  const col = database.collection("Jobs");
+
+  // create doc to be inserted after checking for params
+  var query = {
+    jobID:jobID
+  };
+
+  const result = await col.findOne(query, async function (err, result){
+    if (!result){
+      return res.status(401).send("No jobs found with jobID " + jobID);
+    } else{
+      return res.status(200).json(result)
+    }
+  });
+});
+
+router.post('/postJob', async (req, res) =>{
+  let title = req.body.title;
+  let description = req.body.description;
+  let ownerEmail = req.body.ownerEmail;
+  let companyName = req.body.companyName;
+
+  if (!title || !ownerEmail){
+    res.status(404).send("Need job title and owner email");
+  }
+
+  await client.connect()
+    .catch(error => handleError(error));
+  console.log("Succesfully connected to DB...")
+
+  const database = client.db("test");
+  const col = database.collection("Jobs");
+
+  const max_id = await col.find().sort({jobID:-1}).limit(1).toArray()
+    .catch(error => handleError(error));
+
+  var jobID;
+  if (!max_id){
+    jobId = 1;
+  } else{
+    console.log(max_id);
+    jobID = max_id[0].jobID + 1;
+  }
+
+  console.log(jobID);
+  // create doc to be inserted
+  var doc = {
+    jobID:jobID,
+    title:title,
+    description:description,
+    ownerEmail:ownerEmail,
+    companyName:companyName,
+    dateCreated: new Date()
+  };
+
+  const result = await col.insertOne(doc)
+    .catch(error => handleError(error));
+  console.log(
+    `${result.insertedCount} documents were inserted with the _id: ${result.insertedId}`,
+  );
+
+  res.status(200);
+  return
+});
