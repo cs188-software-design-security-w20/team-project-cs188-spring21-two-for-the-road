@@ -93,6 +93,8 @@ async function getJob(jobID) {
 }
 
 
+
+//get job by Id
 router.get('/getJob/:jobID', async (req, res) => {
   // connect to database
   var jobID = req.params.jobID;
@@ -105,19 +107,29 @@ router.get('/getJob/:jobID', async (req, res) => {
 
   // create doc to be inserted after checking for params
   var query = {
-    jobID:jobID
+    "jobID" : parseInt(jobID)
   };
 
   const result = await col.findOne(query, async function (err, result){
-    if (!result){
+    
+	
+	if (!result){
       return res.status(401).send("No jobs found with jobID " + jobID);
     } else{
       return res.status(200).json(result)
     }
+	
   });
 });
 
-router.post('/postJob', async (req, res) =>{
+
+
+
+
+
+//create a job offer
+router.post('/postjob', async (req, res) =>{
+
   let title = req.body.title;
   let description = req.body.description;
   let ownerEmail = req.body.ownerEmail;
@@ -125,6 +137,7 @@ router.post('/postJob', async (req, res) =>{
 
   if (!title || !ownerEmail){
     res.status(404).send("Need job title and owner email");
+	return
   }
 
   await client.connect()
@@ -159,9 +172,12 @@ router.post('/postJob', async (req, res) =>{
   const result = await col.insertOne(doc)
     .catch(error => handleError(error));
   console.log(
-    `${result.insertedCount} documents were inserted with the _id: ${result.insertedId}`,
+   // `${result.insertedCount} documents were inserted with the _id: ${result.insertedId}`,
   );
-
-  res.status(200);
+console.log(result)
+  res.status(200).send('created!');
   return
 });
+
+
+module.exports = router;

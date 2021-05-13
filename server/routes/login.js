@@ -22,9 +22,9 @@ const jwt = require('jsonwebtoken')
    email : string
     String of the email we want to check for validy
 */
-let handleError = (error) => {
-  console.log(error);
-}
+// let handleError = (error) => {
+//   console.log(error);
+// }
 
 /*
   Function to be called when an existing User signs up to DB
@@ -293,6 +293,5 @@ res.redirect('/')
 
 
 })
->>>>>>> acad7e527671a795539811567190548ba8f0fd91
 
 module.exports = router;

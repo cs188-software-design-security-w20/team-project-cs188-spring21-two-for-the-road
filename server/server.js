@@ -12,13 +12,15 @@ const app = express()
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
 require('dotenv').config({path: './config/config.env'})
-
+const connectMongo = require('./config/DbConnect')
 // const cors = require('cors')
 
 
 const client = require('mongodb').MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 const signUpRoute = require ('./routes/signUp.js');
 const loginRoute = require ('./routes/login.js');
+const jobsRoute = require ('./routes/jobs.js');
+
 
 
 const my_port = process.env.PORT || config.app.port || 5000;
@@ -32,6 +34,7 @@ let handleError = (error) => {
   console.log(error);
 }
 
+connectMongo();
 mongoose.createConnection(uri, {useNewUrlParser: true, useUnifiedTopology: true}).
   catch(error => handleError(error));
   
@@ -49,6 +52,7 @@ app.use(cookieParser())
 // 	});
 app.use('/signup', signUpRoute);
 app.use('/login', loginRoute);
+app.use('/jobs', jobsRoute);
 
   // .listen(process.env.PORT || 5000)
 const server = app.listen(my_port, () => {
