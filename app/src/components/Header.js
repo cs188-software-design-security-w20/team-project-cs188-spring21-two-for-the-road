@@ -18,7 +18,44 @@ const Header = ({history}) =>{
 		document.cookie = "jwt=; expires=Thu, 18 Dec 2013 12:00:00 UTC";
 		
 	}
-	
+	var loginMenue;
+	if(isAuthenticated){
+		loginMenue = (
+		
+			<div className = "header" >
+				
+					<div className="logo">AppName</div>
+					<Nav className ="navLink">
+			<NavItem>
+			  <NavLink href="/profile">Profile</NavLink>
+			</NavItem>
+			<NavItem>
+			  <NavLink href="#">Saved jobs</NavLink>
+			</NavItem>
+			<NavItem>
+			  <NavLink href="#">My applications</NavLink>
+			</NavItem>
+		  </Nav>
+		<div className="auth-menu"> <Button to="/" onClick= {logoutHandler}>Logout</Button></div>
+		</div>)
+	}
+	else{
+		loginMenue = (
+			<div className = "header" >
+					<div className="logo">AppName</div>
+			<div className="auth-menu">
+						<Button outline color="info" className ="mx-3"
+						onClick = {()=> {
+							history.push("/signupUser")
+						}}
+						>Join us!</Button>
+						<Button color="secondary" onClick = {()=> {
+							history.push("/")
+						}}>Sign in!</Button>{' '}
+					</div>
+					</div>
+		)
+	}
 
 	const Login = (
 		<div className = "header" >
@@ -29,35 +66,17 @@ const Header = ({history}) =>{
 						history.push("/signupUser")
 					}}
 					>Join us!</Button>
-                    <Button color="secondary">Sign in!</Button>{' '}
+                    <Button color="secondary" onClick = {()=> {
+						history.push("/")
+					}}>Sign in!</Button>{' '}
                 </div>
 				</div>
 	)
 
-	const LogOut =(
-		
-		<div className = "header" >
-			
-                <div className="logo">AppName</div>
-				<Nav>
-        <NavItem>
-          <NavLink href="#">Link</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink href="#">Link</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink href="#">Another Link</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink disabled href="#">Disabled Link</NavLink>
-        </NavItem>
-      </Nav>
-	<div className="auth-menu"> <Button to="/" onClick= {logoutHandler}>Logout</Button></div>
-	</div>)
+	
         return (
 			
-			<Fragment> {isAuthenticated ? LogOut : Login}</Fragment>
+			<Fragment> {loginMenue}</Fragment>
                
                 
         );

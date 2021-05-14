@@ -34,7 +34,7 @@ position: fixed;
 .auth-menu{
   left: 1200px;
   position: relative;
-  bottom: 45px;
+  bottom: 42px;
   color: white !important;
   width: 100%;
   
@@ -150,4 +150,19 @@ position: fixed;
   dropdown-toggle::after {
 	margin-left: 4.255em !important;
 	margin-bottom: 7px;
+  }
+  .navLink{
+	display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    position: relative;
+    top: -45px;
+    left: 804px;
+  }
+  .profilWrapper{
+	position: relative;
+    top: 66px;
+    left: 25px;
   }

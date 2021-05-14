@@ -5,6 +5,7 @@ const router = express.Router()
 var multer  = require('multer')
 var upload = multer({ dest: '../app/public/images' })
 const jwt = require('jsonwebtoken')
+var fs = require('fs');
 /*
   This file contains function that can be called when a User signs up for an account:
 	- signUpStudent
@@ -198,7 +199,15 @@ router.post('/', upload.single('profileImage'), async (req, res, next) => {
 	let StudentORrecruiter = req.body.StudentORrecruiter
 
 	console.log(req.file)
-	console.log(req.body)
+	//console.log(req.body)
+	let fileType = req.file.mimetype.split('/')
+	let newFileName = req.file.filename + "."+ fileType[1]
+	console.log(newFileName)
+	fs.rename(`../app/public/images/${req.file.filename}`,`../app/public/images/${newFileName}`, ()=>{
+		console.log("name changed!")
+	})
+	
+
 	if (StudentORrecruiter === 'student') {
 		let email = req.body.email
 		let password = req.body.password
