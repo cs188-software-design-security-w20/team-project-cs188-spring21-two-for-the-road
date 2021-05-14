@@ -166,3 +166,19 @@ position: fixed;
     top: 66px;
     left: 25px;
   }
+  .auth-menu2{
+	left: 1200px;
+	position: relative;
+	bottom: 85px;
+	color: white !important;
+	width: 100%;
+	
+  }
+  .spacer{
+	position: relative;
+	top: 66px;
+	left: 25px
+  }
+  .profileImage{
+	  width: 15%
+  }

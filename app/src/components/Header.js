@@ -30,13 +30,13 @@ const Header = ({history}) =>{
 			  <NavLink href="/profile">Profile</NavLink>
 			</NavItem>
 			<NavItem>
-			  <NavLink href="#">Saved jobs</NavLink>
+			  <NavLink href="/job-apps">jobs</NavLink>
 			</NavItem>
 			<NavItem>
 			  <NavLink href="#">My applications</NavLink>
 			</NavItem>
 		  </Nav>
-		<div className="auth-menu"> <Button to="/" onClick= {logoutHandler}>Logout</Button></div>
+		<div className="auth-menu2"> <Button to="/" onClick= {logoutHandler}>Logout</Button></div>
 		</div>)
 	}
 	else{
