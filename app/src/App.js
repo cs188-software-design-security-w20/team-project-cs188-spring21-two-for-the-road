@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import {BrowserRouter, Route, Switch} from "react-router-dom"
 import {Provider} from 'react-redux'
 import {loadUser} from './actions/authAction'
-import store from './store'
+import {store} from './store'
 //import "./App.css";
 //import Header from "./components/Header"
 import Home from "./pages/Home"

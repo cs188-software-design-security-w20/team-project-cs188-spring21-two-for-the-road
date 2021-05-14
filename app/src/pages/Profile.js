@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import Header from "../components/Header"
+import {connect} from 'react-redux'
 import {register} from '../actions/authAction'
 import {clearErrors} from '../actions/errorActions'
-import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import { Route , withRouter} from 'react-router-dom';
 
-
+console.log("karim")
 class Profile extends Component {
 	constructor(props) {
 		super(props);
@@ -18,27 +18,18 @@ class Profile extends Component {
 	  }
 
 	  static propTypes = {
-        auth : PropTypes.object.isRequired,	
+        isAuthenticated : PropTypes.bool,
+        error : PropTypes.object.isRequired,
+        register: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
     }
 
-	componentDidUpdate(prevProps){
-		const { error, history, location, isAthenticated } = this.props;
-		  
-		  if(error !== prevProps.error){
-			  if(error.id=== 'REGISTER_FAIL'){
-				  this.setState({msg: error.msg})
-  
-			  }
-			  else {
-				  this.setState({ msg: null})
-			  }
-		  }
 		 // const redirect = location.search ? location.search.split('=')[1] : '/'
 		 // if (!isAthenticated) {
 		 //     history.push(redirect)
 		 // }
   
-	  }
+	  
 
 	render() {
 		const { auth} = this.props
@@ -51,8 +42,9 @@ class Profile extends Component {
 		
 		
 		return (
+			
 			<div>
-				{console.log("karim")}
+				
 				<Header />
 				<div className="profilWrapper">
 					 {/* <img src={require(`${imagePath}`)}></img>  */}
@@ -64,11 +56,10 @@ class Profile extends Component {
 	}
 }
 const mapStateToProps = state =>({
-    
-	user: state.auth,
-  
+	auth: state.auth,
+    error: state.error
 })
 export default connect (
     mapStateToProps,
-    null
+    {register, clearErrors}
 )(withRouter(Profile));
