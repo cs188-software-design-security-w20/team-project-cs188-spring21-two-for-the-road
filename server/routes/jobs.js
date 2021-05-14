@@ -95,9 +95,9 @@ async function getJob(jobID) {
 
 
 //get job by Id
-router.get('/getJob/:jobID', async (req, res) => {
+router.get('/getJob', async (req, res) => {
   // connect to database
-  var jobID = req.params.jobID;
+  var jobID = req.body.jobID;
   await client.connect()
     .catch(error => handleError(error));
   console.log("Succesfully connected to DB...")
@@ -179,5 +179,18 @@ console.log(result)
   return
 });
 
+router.get('/jobs', async (req, res)=> {
+	await client.connect()
+    .catch(error => handleError(error));
+  console.log("Succesfully connected to DB...")
+  const database = client.db("test");
+  const col = database.collection("Jobs");
+  const jobs = await col.find().toArray().then( jobs => {
+	res.status(200).json(jobs)
+  }
+
+  )
+	
+})
 
 module.exports = router;
