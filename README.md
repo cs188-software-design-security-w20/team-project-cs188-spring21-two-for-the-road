@@ -5,7 +5,7 @@ Team members:
 * Aritra Mullick
 * Arabelle Siahaan
 * Seunghyun Kim
-* 
+
 ## Description:
 Our software is a web application catered for UCLA students and club recruiters that enables both parties to job match. 
 In our application, students can find jobs that suit them based on their abilities, 
