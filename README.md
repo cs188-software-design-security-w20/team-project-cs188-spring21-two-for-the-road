@@ -22,7 +22,7 @@ where finding job postings is comparatively simple with websites and application
   After installation: you can run the app using : npm start
   The server runs in port: 5000, and app runs in port: 3000
   
-* To avoid the browser Cross-Origins issues during developement: "proxy": "http://localhost:5000" on the Frontend app.
+* To avoid the browser Cross-Origins issues during developement we used: "proxy": "http://localhost:5000" on the Frontend app.
   
 
 
