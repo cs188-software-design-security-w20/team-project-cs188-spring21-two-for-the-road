@@ -24,7 +24,7 @@ where finding job postings is comparatively simple with websites and application
 * To avoid the browser Cross-Origins issues during developement we used: "proxy": "http://localhost:5000" on the Frontend app.
 ## environment variables:
 You may need some environment variables to  run the server. In this case, you will need to create a .env file called config.env </br>
-inside /server/config. and add these entries: </br>
+inside /server/config and add these entries: </br>
 ```
 PORT = 5000
 NODE_ENV = Development
