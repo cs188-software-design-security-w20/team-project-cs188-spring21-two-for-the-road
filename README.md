@@ -15,8 +15,7 @@ where finding job postings is comparatively simple with websites and application
 * Nodejs
 
 ## How to run:
-* To run the server: cd to server folder, and install dependencies using : npm install
-  After the installation completed: you can run the server using: npm run dev
+* To run the server: cd to server folder, and install dependencies using : npm install  After the installation completed: you can run the server using: npm run dev
 
 * To run the app: cd to app folder and install dependencies using: npm install
   After installation: you can run the app using : npm start
