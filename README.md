@@ -35,8 +35,8 @@ inside /server/config and add these entries: </br>
 ```
 PORT = 5000
 NODE_ENV = Development
-GOOGLE_CAPTCH_API=6Lc6Lr8aAAAAAMLBpBi9ryJU1PJn3d2XBxWAxmC-
-JWT_SECRET: -AY3xf2MUpm6-4RwVXlGqnnzrqGkXpKR2Mg2DLr8xwnXa5wYfwqtdtfuumANhParzjX61k8p41o-Ykiw4zZ_9lwGlu4Qkq_y1kMjnhmXZk8kMDkD4VwFAms2_SWFqHHThERHvOsdviB_bQzC88t0a4Sf79d-J7StA79LwOe44D8
+GOOGLE_CAPTCH_API=
+JWT_SECRET: 
 ```
 
 
